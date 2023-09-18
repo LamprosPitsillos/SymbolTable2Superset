@@ -1,0 +1,152 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
+}
+
+model Dependency {
+    id      Int    @id @default(autoincrement())
+    from    String
+    to      String
+    types   Types  @relation(fields: [typesId], references: [id])
+    typesId Int    @unique
+}
+
+model Types {
+    id                  Int         @id @default(autoincrement())
+    Inherit             Int         @default(0)
+    Friend              Int         @default(0)
+    NestedClass         Int         @default(0)
+    ClassField          Int         @default(0)
+    ClassTemplateParent Int         @default(0)
+    ClassTemplateArg    Int         @default(0)
+    MethodReturn        Int         @default(0)
+    MethodArg           Int         @default(0)
+    MethodDefinition    Int         @default(0)
+    MemberExpr          Int         @default(0)
+    MethodTemplateArgs  Int         @default(0)
+    Dependency          Dependency?
+}
+
+model Source {
+    id     Int    @id @default(autoincrement())
+    source String
+}
+
+model Structure {
+    id              Int                  @id @default(autoincrement())
+    signature       String
+    bases           Bases[]
+    contain         Contain[]
+    fields          Fields[]
+    friend          Friends[]
+    methods         Method[]
+    name            String
+    namespace       String
+    // nested_parent 
+    col             Int
+    line            Int
+    file            String
+    structure_type  String
+    template_args   StructTemplateArgs[]
+    template_parent String?
+}
+
+model StructTemplateArgs {
+    id        Int       @id @default(autoincrement())
+    arg       String
+    structure Structure @relation(fields: [structId], references: [id])
+    structId  Int       @unique
+}
+
+model Bases {
+    id          Int       @id @default(autoincrement())
+    name        String
+    structure   Structure @relation(fields: [structureId], references: [id])
+    structureId Int       @unique
+}
+
+model Contain {
+    id          Int       @id @default(autoincrement())
+    name        String
+    structure   Structure @relation(fields: [structureId], references: [id])
+    structureId Int       @unique
+}
+
+model Fields {
+    id          Int       @id @default(autoincrement())
+    full_name   String //  "members::A::m" 
+    // access Access
+    access      String
+    type        String // "type" : "members::A::M"
+    full_type   String // "full_type" : "class members::A::M",
+    name        String // "name" : "m",
+    // src_info
+    col         Int
+    file        String
+    line        Int
+    structure   Structure @relation(fields: [structureId], references: [id])
+    structureId Int       @unique
+}
+
+model Friends {
+    id          Int       @id @default(autoincrement())
+    name        String
+    Structure   Structure @relation(fields: [structureId], references: [id])
+    structureId Int       @unique
+}
+
+model Method {
+    id           Int                  @id @default(autoincrement())
+    signature    String
+    access       String
+    argsId       Int                  @unique
+    args         Args[]
+    brances      Int
+    // definitions   Int
+    lines        Int
+    literals     Int
+    loops        Int
+    max_score    Int
+    method_type  String //  ex "Constructor_Trivial"
+    name         String
+    ret_type     String
+    col          Int
+    line         Int
+    file         String
+    statements   Int
+    templateArgs MethodTemplateArgs[]
+    virtual      Boolean
+    Structure    Structure            @relation(fields: [structureId], references: [id])
+    structureId  Int                  @unique
+}
+
+model MethodTemplateArgs {
+    id       Int    @id @default(autoincrement())
+    arg      String
+    Method   Method @relation(fields: [methodId], references: [id])
+    methodId Int    @unique
+}
+
+model Args {
+    id        Int    @id @default(autoincrement())
+    full_type String
+    col       Int
+    line      Int
+    file      String
+    type      String
+    method    Method @relation(fields: [methodId], references: [id])
+    methodId  Int    @unique
+}
+
+// enum Access {
+//     private
+//     public
+//     protected
+// }

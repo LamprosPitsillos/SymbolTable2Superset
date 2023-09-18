@@ -1,0 +1,1562 @@
+{
+	"dependencies" : 
+	[
+		{
+			"from" : "memberExpr::B",
+			"to" : "memberExpr::C",
+			"types" : 
+			{
+				"ClassField" : 2
+			}
+		},
+		{
+			"from" : "memberExpr::Y",
+			"to" : "memberExpr::K",
+			"types" : 
+			{
+				"ClassField" : 1
+			}
+		},
+		{
+			"from" : "memberExpr::A",
+			"to" : "memberExpr::B",
+			"types" : 
+			{
+				"ClassField" : 2,
+				"MemberExpr" : 6,
+				"MethodDefinition" : 2,
+				"MethodReturn" : 2
+			}
+		},
+		{
+			"from" : "memberExpr::A",
+			"to" : "memberExpr::C",
+			"types" : 
+			{
+				"MemberExpr" : 4,
+				"MethodDefinition" : 3
+			}
+		},
+		{
+			"from" : "memberExpr::A",
+			"to" : "memberExpr::X",
+			"types" : 
+			{
+				"MemberExpr" : 3,
+				"MethodDefinition" : 2
+			}
+		},
+		{
+			"from" : "memberExpr::A",
+			"to" : "memberExpr::A<B>::A",
+			"types" : 
+			{
+				"MemberExpr" : 3,
+				"MethodDefinition" : 1
+			}
+		},
+		{
+			"from" : "memberExpr::A",
+			"to" : "memberExpr::Y",
+			"types" : 
+			{
+				"MemberExpr" : 2
+			}
+		},
+		{
+			"from" : "memberExpr::C",
+			"to" : "memberExpr::X",
+			"types" : 
+			{
+				"ClassField" : 1
+			}
+		},
+		{
+			"from" : "memberExpr::X",
+			"to" : "memberExpr::Y",
+			"types" : 
+			{
+				"MethodDefinition" : 1,
+				"MethodReturn" : 2
+			}
+		},
+		{
+			"from" : "memberExpr::A<B>::A",
+			"to" : "memberExpr::A",
+			"types" : 
+			{
+				"ClassTemplateParent" : 1
+			}
+		},
+		{
+			"from" : "memberExpr::A<B>::A",
+			"to" : "memberExpr::B",
+			"types" : 
+			{
+				"ClassTemplateArg" : 1,
+				"MemberExpr" : 12,
+				"MethodDefinition" : 3,
+				"MethodReturn" : 2
+			}
+		},
+		{
+			"from" : "memberExpr::A<B>::A",
+			"to" : "memberExpr::C",
+			"types" : 
+			{
+				"MemberExpr" : 8,
+				"MethodDefinition" : 3
+			}
+		},
+		{
+			"from" : "memberExpr::A<B>::A",
+			"to" : "memberExpr::X",
+			"types" : 
+			{
+				"MemberExpr" : 4,
+				"MethodDefinition" : 2
+			}
+		},
+		{
+			"from" : "memberExpr::A<B>::A",
+			"to" : "memberExpr::Y",
+			"types" : 
+			{
+				"MemberExpr" : 3
+			}
+		}
+	],
+	"sources" : 
+	[
+		"/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp"
+	],
+	"structures" : 
+	{
+		"memberExpr::A" : 
+		{
+			"bases" : null,
+			"contains" : null,
+			"fields" : 
+			{
+				"memberExpr::A::b" : 
+				{
+					"access" : "public",
+					"full_type" : "struct memberExpr::B",
+					"name" : "b",
+					"src_info" : 
+					{
+						"col" : 5,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 42
+					},
+					"type" : "memberExpr::B"
+				},
+				"memberExpr::A::b2" : 
+				{
+					"access" : "public",
+					"full_type" : "struct memberExpr::B *",
+					"name" : "b2",
+					"src_info" : 
+					{
+						"col" : 6,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 43
+					},
+					"type" : "memberExpr::B"
+				}
+			},
+			"friends" : null,
+			"methods" : 
+			{
+				"memberExpr::A::m_a(void)" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 1,
+					"definitions" : null,
+					"lines" : 2,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "UserMethod",
+					"name" : "m_a",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 49
+					},
+					"statements" : 1,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::A::m_b(int)" : 
+				{
+					"access" : "public",
+					"args" : 
+					{
+						"i" : 
+						{
+							"full_type" : "int",
+							"name" : "i",
+							"src_info" : 
+							{
+								"col" : 13,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 44
+							},
+							"type" : null
+						}
+					},
+					"branches" : 1,
+					"definitions" : 
+					{
+						"b" : 
+						{
+							"full_type" : "memberExpr::B",
+							"name" : "b",
+							"src_info" : 
+							{
+								"col" : 6,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 45
+							},
+							"type" : "memberExpr::B"
+						}
+					},
+					"lines" : 3,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "UserMethod",
+					"name" : "m_b",
+					"ret_type" : "memberExpr::B",
+					"src_info" : 
+					{
+						"col" : 5,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 44
+					},
+					"statements" : 2,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::A::method(void)" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 2,
+					"definitions" : 
+					{
+						"a" : 
+						{
+							"full_type" : "memberExpr::A<B>::A",
+							"name" : "a",
+							"src_info" : 
+							{
+								"col" : 9,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 78
+							},
+							"type" : "memberExpr::A<B>::A"
+						},
+						"auto_c" : 
+						{
+							"full_type" : "memberExpr::C",
+							"name" : "auto_c",
+							"src_info" : 
+							{
+								"col" : 9,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 74
+							},
+							"type" : "memberExpr::C"
+						},
+						"bb" : 
+						{
+							"full_type" : "T",
+							"name" : "bb",
+							"src_info" : 
+							{
+								"col" : 6,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 59
+							},
+							"type" : null
+						},
+						"c" : 
+						{
+							"full_type" : "memberExpr::C",
+							"name" : "c",
+							"src_info" : 
+							{
+								"col" : 6,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 58
+							},
+							"type" : "memberExpr::C"
+						},
+						"pb" : 
+						{
+							"full_type" : "memberExpr::B",
+							"name" : "pb",
+							"src_info" : 
+							{
+								"col" : 7,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 54
+							},
+							"type" : "memberExpr::B"
+						},
+						"pc" : 
+						{
+							"full_type" : "memberExpr::C",
+							"name" : "pc",
+							"src_info" : 
+							{
+								"col" : 7,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 57
+							},
+							"type" : "memberExpr::C"
+						},
+						"px" : 
+						{
+							"full_type" : "memberExpr::X",
+							"name" : "px",
+							"src_info" : 
+							{
+								"col" : 7,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 63
+							},
+							"type" : "memberExpr::X"
+						},
+						"x" : 
+						{
+							"full_type" : "memberExpr::X",
+							"name" : "x",
+							"src_info" : 
+							{
+								"col" : 6,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 62
+							},
+							"type" : "memberExpr::X"
+						}
+					},
+					"lines" : 31,
+					"literals" : 5,
+					"loops" : 0,
+					"max_scope" : 1,
+					"method_type" : "UserMethod",
+					"name" : "method",
+					"ret_type" : "memberExpr::B",
+					"src_info" : 
+					{
+						"col" : 5,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 53
+					},
+					"statements" : 21,
+					"template_args" : null,
+					"virtual" : false
+				}
+			},
+			"name" : "A",
+			"namespace" : "memberExpr::",
+			"nested_parent" : null,
+			"src_info" : 
+			{
+				"col" : 29,
+				"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+				"line" : 41
+			},
+			"structure_type" : "TemplateDefinition",
+			"template_args" : null,
+			"template_parent" : null
+		},
+		"memberExpr::A<B>::A" : 
+		{
+			"bases" : null,
+			"contains" : null,
+			"fields" : null,
+			"friends" : null,
+			"methods" : 
+			{
+				"memberExpr::A<memberExpr::B>::A(const struct memberExpr::A<struct memberExpr::B> &)" : 
+				{
+					"access" : "unknown",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "A",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 29,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 41
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::A<memberExpr::B>::A(struct memberExpr::A<struct memberExpr::B> &&)" : 
+				{
+					"access" : "unknown",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "A",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 29,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 41
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::A<memberExpr::B>::A(void) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "A",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 29,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 41
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::A<memberExpr::B>::m_a(void)" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 1,
+					"definitions" : null,
+					"lines" : 2,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "UserMethod",
+					"name" : "m_a",
+					"ret_type" : "memberExpr::A<B>::A",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 49
+					},
+					"statements" : 1,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::A<memberExpr::B>::m_b(int)" : 
+				{
+					"access" : "public",
+					"args" : 
+					{
+						"i" : 
+						{
+							"full_type" : "int",
+							"name" : "i",
+							"src_info" : 
+							{
+								"col" : 13,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 44
+							},
+							"type" : null
+						}
+					},
+					"branches" : 1,
+					"definitions" : 
+					{
+						"b" : 
+						{
+							"full_type" : "memberExpr::B",
+							"name" : "b",
+							"src_info" : 
+							{
+								"col" : 6,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 45
+							},
+							"type" : "memberExpr::B"
+						}
+					},
+					"lines" : 3,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "UserMethod",
+					"name" : "m_b",
+					"ret_type" : "memberExpr::B",
+					"src_info" : 
+					{
+						"col" : 5,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 44
+					},
+					"statements" : 2,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::A<memberExpr::B>::method(void)" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 2,
+					"definitions" : 
+					{
+						"a" : 
+						{
+							"full_type" : "memberExpr::A<B>::A",
+							"name" : "a",
+							"src_info" : 
+							{
+								"col" : 9,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 78
+							},
+							"type" : "memberExpr::A<B>::A"
+						},
+						"auto_c" : 
+						{
+							"full_type" : "memberExpr::C",
+							"name" : "auto_c",
+							"src_info" : 
+							{
+								"col" : 9,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 74
+							},
+							"type" : "memberExpr::C"
+						},
+						"bb" : 
+						{
+							"full_type" : "memberExpr::B",
+							"name" : "bb",
+							"src_info" : 
+							{
+								"col" : 6,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 59
+							},
+							"type" : "memberExpr::B"
+						},
+						"c" : 
+						{
+							"full_type" : "memberExpr::C",
+							"name" : "c",
+							"src_info" : 
+							{
+								"col" : 6,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 58
+							},
+							"type" : "memberExpr::C"
+						},
+						"pb" : 
+						{
+							"full_type" : "memberExpr::B",
+							"name" : "pb",
+							"src_info" : 
+							{
+								"col" : 7,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 54
+							},
+							"type" : "memberExpr::B"
+						},
+						"pc" : 
+						{
+							"full_type" : "memberExpr::C",
+							"name" : "pc",
+							"src_info" : 
+							{
+								"col" : 7,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 57
+							},
+							"type" : "memberExpr::C"
+						},
+						"px" : 
+						{
+							"full_type" : "memberExpr::X",
+							"name" : "px",
+							"src_info" : 
+							{
+								"col" : 7,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 63
+							},
+							"type" : "memberExpr::X"
+						},
+						"x" : 
+						{
+							"full_type" : "memberExpr::X",
+							"name" : "x",
+							"src_info" : 
+							{
+								"col" : 6,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 62
+							},
+							"type" : "memberExpr::X"
+						}
+					},
+					"lines" : 31,
+					"literals" : 5,
+					"loops" : 0,
+					"max_scope" : 1,
+					"method_type" : "UserMethod",
+					"name" : "method",
+					"ret_type" : "memberExpr::B",
+					"src_info" : 
+					{
+						"col" : 5,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 53
+					},
+					"statements" : 21,
+					"template_args" : null,
+					"virtual" : false
+				}
+			},
+			"name" : "A",
+			"namespace" : "memberExpr::",
+			"nested_parent" : null,
+			"src_info" : 
+			{
+				"col" : 29,
+				"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+				"line" : 41
+			},
+			"structure_type" : "TemplateInstantiationSpecialization",
+			"template_args" : 
+			[
+				"memberExpr::B"
+			],
+			"template_parent" : "memberExpr::A"
+		},
+		"memberExpr::B" : 
+		{
+			"bases" : null,
+			"contains" : null,
+			"fields" : 
+			{
+				"memberExpr::B::c" : 
+				{
+					"access" : "public",
+					"full_type" : "struct memberExpr::C",
+					"name" : "c",
+					"src_info" : 
+					{
+						"col" : 5,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 33
+					},
+					"type" : "memberExpr::C"
+				},
+				"memberExpr::B::pc" : 
+				{
+					"access" : "public",
+					"full_type" : "struct memberExpr::C *",
+					"name" : "pc",
+					"src_info" : 
+					{
+						"col" : 6,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 34
+					},
+					"type" : "memberExpr::C"
+				}
+			},
+			"friends" : null,
+			"methods" : 
+			{
+				"memberExpr::B::B(const struct memberExpr::B &) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "B",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 32
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::B::B(struct memberExpr::B &&) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "B",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 32
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::B::B(void) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "B",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 32
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::B::~B(void) noexcept" : 
+				{
+					"access" : "unknown",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Destructor_Trivial",
+					"name" : "~B",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 32
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				}
+			},
+			"name" : "B",
+			"namespace" : "memberExpr::",
+			"nested_parent" : null,
+			"src_info" : 
+			{
+				"col" : 9,
+				"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+				"line" : 32
+			},
+			"structure_type" : "Struct",
+			"template_args" : null,
+			"template_parent" : null
+		},
+		"memberExpr::C" : 
+		{
+			"bases" : null,
+			"contains" : null,
+			"fields" : 
+			{
+				"memberExpr::C::i" : 
+				{
+					"access" : "public",
+					"full_type" : "int",
+					"name" : "i",
+					"src_info" : 
+					{
+						"col" : 7,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 28
+					},
+					"type" : null
+				},
+				"memberExpr::C::x" : 
+				{
+					"access" : "public",
+					"full_type" : "struct memberExpr::X",
+					"name" : "x",
+					"src_info" : 
+					{
+						"col" : 5,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 29
+					},
+					"type" : "memberExpr::X"
+				}
+			},
+			"friends" : null,
+			"methods" : 
+			{
+				"memberExpr::C::C(const struct memberExpr::C &) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "C",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 27
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::C::C(struct memberExpr::C &&) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "C",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 27
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::C::C(void) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "C",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 27
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::C::operator=(const struct memberExpr::C &) noexcept" : 
+				{
+					"access" : "public",
+					"args" : 
+					{
+						"" : 
+						{
+							"full_type" : "memberExpr::C",
+							"name" : "",
+							"src_info" : 
+							{
+								"col" : 9,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 27
+							},
+							"type" : "memberExpr::C"
+						}
+					},
+					"branches" : 1,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "OverloadedOperator_Trivial",
+					"name" : "operator=",
+					"ret_type" : "memberExpr::C",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 27
+					},
+					"statements" : 3,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::C::operator=(struct memberExpr::C &&)" : 
+				{
+					"access" : "unknown",
+					"args" : 
+					{
+						"" : 
+						{
+							"full_type" : "memberExpr::C",
+							"name" : "",
+							"src_info" : 
+							{
+								"col" : 9,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 27
+							},
+							"type" : "memberExpr::C"
+						}
+					},
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "OverloadedOperator_Trivial",
+					"name" : "operator=",
+					"ret_type" : "memberExpr::C",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 27
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::C::~C(void) noexcept" : 
+				{
+					"access" : "unknown",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Destructor_Trivial",
+					"name" : "~C",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 27
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				}
+			},
+			"name" : "C",
+			"namespace" : "memberExpr::",
+			"nested_parent" : null,
+			"src_info" : 
+			{
+				"col" : 9,
+				"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+				"line" : 27
+			},
+			"structure_type" : "Struct",
+			"template_args" : null,
+			"template_parent" : null
+		},
+		"memberExpr::K" : 
+		{
+			"bases" : null,
+			"contains" : null,
+			"fields" : null,
+			"friends" : null,
+			"methods" : 
+			{
+				"memberExpr::K::K(const struct memberExpr::K &) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "K",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 5
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::K::K(struct memberExpr::K &&)" : 
+				{
+					"access" : "unknown",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "K",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 5
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::K::K(void) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "K",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 5
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::K::~K(void) noexcept" : 
+				{
+					"access" : "unknown",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Destructor_Trivial",
+					"name" : "~K",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 5
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				}
+			},
+			"name" : "K",
+			"namespace" : "memberExpr::",
+			"nested_parent" : null,
+			"src_info" : 
+			{
+				"col" : 9,
+				"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+				"line" : 5
+			},
+			"structure_type" : "Struct",
+			"template_args" : null,
+			"template_parent" : null
+		},
+		"memberExpr::X" : 
+		{
+			"bases" : null,
+			"contains" : null,
+			"fields" : 
+			{
+				"memberExpr::X::i" : 
+				{
+					"access" : "public",
+					"full_type" : "int",
+					"name" : "i",
+					"src_info" : 
+					{
+						"col" : 7,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 15
+					},
+					"type" : null
+				}
+			},
+			"friends" : null,
+			"methods" : 
+			{
+				"memberExpr::X::X(const struct memberExpr::X &) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "X",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 14
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::X::X(struct memberExpr::X &&) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "X",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 14
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::X::X(void) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "X",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 14
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::X::m1(int)" : 
+				{
+					"access" : "public",
+					"args" : 
+					{
+						"i" : 
+						{
+							"full_type" : "int",
+							"name" : "i",
+							"src_info" : 
+							{
+								"col" : 13,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 16
+							},
+							"type" : null
+						}
+					},
+					"branches" : 1,
+					"definitions" : null,
+					"lines" : 2,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "UserMethod",
+					"name" : "m1",
+					"ret_type" : "memberExpr::Y",
+					"src_info" : 
+					{
+						"col" : 6,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 16
+					},
+					"statements" : 1,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::X::m2(void)" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 1,
+					"definitions" : 
+					{
+						"y" : 
+						{
+							"full_type" : "memberExpr::Y",
+							"name" : "y",
+							"src_info" : 
+							{
+								"col" : 6,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 21
+							},
+							"type" : "memberExpr::Y"
+						}
+					},
+					"lines" : 3,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "UserMethod",
+					"name" : "m2",
+					"ret_type" : "memberExpr::Y",
+					"src_info" : 
+					{
+						"col" : 5,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 20
+					},
+					"statements" : 2,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::X::operator=(const struct memberExpr::X &) noexcept" : 
+				{
+					"access" : "public",
+					"args" : 
+					{
+						"" : 
+						{
+							"full_type" : "memberExpr::X",
+							"name" : "",
+							"src_info" : 
+							{
+								"col" : 9,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 14
+							},
+							"type" : "memberExpr::X"
+						}
+					},
+					"branches" : 1,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "OverloadedOperator_Trivial",
+					"name" : "operator=",
+					"ret_type" : "memberExpr::X",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 14
+					},
+					"statements" : 2,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::X::operator=(struct memberExpr::X &&)" : 
+				{
+					"access" : "unknown",
+					"args" : 
+					{
+						"" : 
+						{
+							"full_type" : "memberExpr::X",
+							"name" : "",
+							"src_info" : 
+							{
+								"col" : 9,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 14
+							},
+							"type" : "memberExpr::X"
+						}
+					},
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "OverloadedOperator_Trivial",
+					"name" : "operator=",
+					"ret_type" : "memberExpr::X",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 14
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::X::~X(void) noexcept" : 
+				{
+					"access" : "unknown",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Destructor_Trivial",
+					"name" : "~X",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 14
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				}
+			},
+			"name" : "X",
+			"namespace" : "memberExpr::",
+			"nested_parent" : null,
+			"src_info" : 
+			{
+				"col" : 9,
+				"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+				"line" : 14
+			},
+			"structure_type" : "Struct",
+			"template_args" : null,
+			"template_parent" : null
+		},
+		"memberExpr::Y" : 
+		{
+			"bases" : null,
+			"contains" : null,
+			"fields" : 
+			{
+				"memberExpr::Y::k" : 
+				{
+					"access" : "public",
+					"full_type" : "struct memberExpr::K",
+					"name" : "k",
+					"src_info" : 
+					{
+						"col" : 5,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 8
+					},
+					"type" : "memberExpr::K"
+				}
+			},
+			"friends" : null,
+			"methods" : 
+			{
+				"memberExpr::Y::Y(const struct memberExpr::Y &) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "Y",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 7
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::Y::Y(void) noexcept" : 
+				{
+					"access" : "public",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Constructor_Trivial",
+					"name" : "Y",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 7
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::Y::operator=(const struct memberExpr::Y &)" : 
+				{
+					"access" : "public",
+					"args" : 
+					{
+						"y" : 
+						{
+							"full_type" : "memberExpr::Y",
+							"name" : "y",
+							"src_info" : 
+							{
+								"col" : 25,
+								"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+								"line" : 9
+							},
+							"type" : "memberExpr::Y"
+						}
+					},
+					"branches" : 1,
+					"definitions" : null,
+					"lines" : 2,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "OverloadedOperator_UserDefined",
+					"name" : "operator=",
+					"ret_type" : "memberExpr::Y",
+					"src_info" : 
+					{
+						"col" : 6,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 9
+					},
+					"statements" : 1,
+					"template_args" : null,
+					"virtual" : false
+				},
+				"memberExpr::Y::~Y(void) noexcept" : 
+				{
+					"access" : "unknown",
+					"args" : null,
+					"branches" : 0,
+					"definitions" : null,
+					"lines" : 0,
+					"literals" : 0,
+					"loops" : 0,
+					"max_scope" : 0,
+					"method_type" : "Destructor_Trivial",
+					"name" : "~Y",
+					"ret_type" : "void",
+					"src_info" : 
+					{
+						"col" : 9,
+						"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+						"line" : 7
+					},
+					"statements" : 0,
+					"template_args" : null,
+					"virtual" : false
+				}
+			},
+			"name" : "Y",
+			"namespace" : "memberExpr::",
+			"nested_parent" : null,
+			"src_info" : 
+			{
+				"col" : 9,
+				"file" : "/home/inferno/UoC/Ptixiaki/TEST/objects_used_on_methods.cpp",
+				"line" : 7
+			},
+			"structure_type" : "Struct",
+			"template_args" : null,
+			"template_parent" : null
+		}
+	}
+}
