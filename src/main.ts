@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { SymbolTreeJson } from './SyntaxTree'
+import { SymbolTreeJson,Source,Dependency,Structures } from './SyntaxTree'
 
 const prisma = new PrismaClient()
 
@@ -29,33 +29,48 @@ function readClangSyntaxTree(filePath: string): SymbolTreeJson {
     }
 }
 
-// Example usage:
-try {
-    // const filePath = './STjsons/test_objects_used_by_methods.json';
+function fillDatabaseSources(sources:Source[]) {
+
+    
+}
+function fillDatabaseDependancies(dependencies:Dependency[]) {
+
+    
+}
+function fillDatabaseStructures(structures:Structures[]) {
+
+    
+}
+async function fillDatabase(symbol_tree:SymbolTreeJson) {
+    // fillDatabaseDependancies()
+    // fillDatabaseSources()
+    // fillDatabaseStructures()
+
+  //   await prisma.user.create({
+  //   data: {
+  //     name: 'Alice',
+  //     email: 'alice@prisma.io',
+  //     posts: {
+  //       create: { title: 'Hello World' },
+  //     },
+  //     profile: {
+  //       create: { bio: 'I like turtles' },
+  //     },
+  //   },
+  // })
+
+}
+
+async function main() {
     const filePath = process.argv[2];
-    // const filePath = path(process.argv[2]);
-    console.log(filePath)
     if (filePath === undefined) {
         console.log("Provide a filePath to the Syntax Tree json file.")
         exit(1)
     }
-
-    const STJSON = readClangSyntaxTree(filePath);
-    console.log("===========================================");
-    for (const struct in STJSON.structures) {
-        const element = STJSON.structures[struct];
-        console.log(struct);
-
-        console.log(element.name);
+    const symbol_tree = readClangSyntaxTree(filePath);
+    fillDatabase(symbol_tree)
 
 
-    }
-
-} catch (error) {
-    throw error;
-}
-
-async function main() {
 }
 
 main()

@@ -75,9 +75,15 @@ export type Method = {
     template_args: string[] | null;
     virtual: boolean;
 };
+
+export type Source = String;
+export type Structures = Record<string, StructureEntry>;
+
+
 export type SymbolTreeJson = {
     dependencies: Dependency[];
-    sources: String[];
-    structures: Record<string, StructureEntry>;
+    sources: Source[];
+    structures: Structures;
 
 }
+
