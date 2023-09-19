@@ -49,7 +49,7 @@ model Structure {
     methods         Method[]
     name            String
     namespace       String
-    // nested_parent 
+    // TODO: nested_parent 
     col             Int
     line            Int
     file            String

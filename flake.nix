@@ -34,6 +34,7 @@
                   ];
                   dotenv.disableHint = true;
                   languages.javascript.enable = true;
+                  languages.javascript.package = pkgs.nodejs_20;
                   languages.typescript.enable = true;
                   # enterShell = ''
                   #   hello

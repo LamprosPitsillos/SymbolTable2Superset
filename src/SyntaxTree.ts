@@ -1,19 +1,19 @@
 export type Types = {
-    Inherit: Number,
-    Friend: Number,
-    NestedClass: Number,
-    ClassField: Number,
-    ClassTemplateParent: Number,
-    ClassTemplateArg: Number,
-    MethodReturn: Number,
-    MethodArg: Number,
-    MethodDefinition: Number,
-    MemberExpr: Number,
-    MethodTemplateArgs: Number,
+    Inherit: number,
+    Friend: number,
+    NestedClass: number,
+    ClassField: number,
+    ClassTemplateParent: number,
+    ClassTemplateArg: number,
+    MethodReturn: number,
+    MethodArg: number,
+    MethodDefinition: number,
+    MemberExpr: number,
+    MethodTemplateArgs: number,
 }
 export type Dependency = {
-    from: String,
-    to: String,
+    from: string,
+    to: string,
     types: Types
 
 }
@@ -47,16 +47,16 @@ export type StructureEntry = {
 };
 
 export type Arg = {
-    full_type: String;
-    name: String;
+    full_type: string;
+    name: string;
     src_info: SrcInfo;
-    type: String;
+    type: string;
 }
 export type Definition = {
-    full_type: String;
-    name: String;
+    full_type: string;
+    name: string;
     src_info: SrcInfo;
-    type: String;
+    type: string;
 }
 export type Method = {
     access: string;
@@ -76,7 +76,7 @@ export type Method = {
     virtual: boolean;
 };
 
-export type Source = String;
+export type Source = string;
 export type Structures = Record<string, StructureEntry>;
 
 

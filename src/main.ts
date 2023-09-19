@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { SymbolTreeJson,Source,Dependency,Structures } from './SyntaxTree'
+import { SymbolTreeJson, Source, Dependency, Structures, StructureEntry } from './SyntaxTree'
 
 const prisma = new PrismaClient()
 
@@ -29,35 +29,63 @@ function readClangSyntaxTree(filePath: string): SymbolTreeJson {
     }
 }
 
-function fillDatabaseSources(sources:Source[]) {
+async function fillDatabaseSources(sources: Source[]) {
+    for (const source in sources) {
+        await prisma.source.create({
+            data: {
+                source: source
+            },
+        })
 
-    
+    }
 }
-function fillDatabaseDependancies(dependencies:Dependency[]) {
+async function fillDatabaseDependancies(dependencies: Dependency[]) {
+    for (const dependency of dependencies) {
+        await prisma.dependency.create({
+            data: {
+                from: dependency.from,
+                to: dependency.to,
+                types: {
+                    create: dependency.types
+                }
 
-    
+            },
+        })
+
+    }
 }
-function fillDatabaseStructures(structures:Structures[]) {
+async function fillDatabaseStructures(structures: Structures) {
+    for (const structure_name in structures) {
+        const structure: StructureEntry = structures[structure_name]
+        await prisma.structure.create({
+            data: {
+                signature:structure_name,
+                // bases:structure.bases,
+                // contain:structure.contains,
 
-    
+                // fields:structure.fields,
+                // friend:structure.friends,
+                // methods:structure.methods,
+                name:structure.name,
+                namespace:structure.namespace,
+                col:structure.src_info.col,
+                line:structure.src_info.line,
+                file:structure.src_info.file,
+                structure_type:structure.structure_type,
+                // template_args:structure.template_args,
+                template_parent:structure.template_parent
+            },
+        })
+
+    }
+
+
 }
-async function fillDatabase(symbol_tree:SymbolTreeJson) {
-    // fillDatabaseDependancies()
-    // fillDatabaseSources()
-    // fillDatabaseStructures()
+function fillDatabase(symbol_tree: SymbolTreeJson) {
+    fillDatabaseDependancies(symbol_tree.dependencies)
+    fillDatabaseSources(symbol_tree.sources)
+    fillDatabaseStructures(symbol_tree.structures)
 
-  //   await prisma.user.create({
-  //   data: {
-  //     name: 'Alice',
-  //     email: 'alice@prisma.io',
-  //     posts: {
-  //       create: { title: 'Hello World' },
-  //     },
-  //     profile: {
-  //       create: { bio: 'I like turtles' },
-  //     },
-  //   },
-  // })
 
 }
 
@@ -68,7 +96,9 @@ async function main() {
         exit(1)
     }
     const symbol_tree = readClangSyntaxTree(filePath);
-    fillDatabase(symbol_tree)
+    console.log(symbol_tree.dependencies[0].types);
+
+    // fillDatabase(symbol_tree)
 
 
 }
