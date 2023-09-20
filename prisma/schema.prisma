@@ -102,24 +102,36 @@ model Friends {
     structureId Int       @unique
 }
 
+model Definition {
+    id        Int    @id @default(autoincrement())
+    full_type String
+    name      String
+    col       Int
+    line      Int
+    file      String
+    type      String
+
+    Method   Method? @relation(fields: [methodId], references: [id])
+    methodId Int?
+}
+
 model Method {
     id           Int                  @id @default(autoincrement())
-    signature    String
     access       String
-    argsId       Int                  @unique
     args         Args[]
-    brances      Int
-    // definitions   Int
+    branches     Int
+    col          Int
+    definitions  Definition[]
+    file         String
+    line         Int
     lines        Int
     literals     Int
     loops        Int
-    max_score    Int
+    max_scope    Int
     method_type  String //  ex "Constructor_Trivial"
     name         String
     ret_type     String
-    col          Int
-    line         Int
-    file         String
+    signature    String
     statements   Int
     templateArgs MethodTemplateArgs[]
     virtual      Boolean
