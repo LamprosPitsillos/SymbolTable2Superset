@@ -1,7 +1,9 @@
 import { PrismaClient } from '@prisma/client'
 import { SymbolTreeJson, Source, Dependency, Structures, StructureEntry, Field, Field_flat, Method, Method_flat, Arg, Arg_flat, Definition, Definition_flat } from './SyntaxTree'
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient({
+  errorFormat: 'pretty',
+})
 
 import * as fs from 'fs';
 import { exit } from 'process';
@@ -32,11 +34,13 @@ function readClangSyntaxTree(filePath: string): SymbolTreeJson {
 
 async function fillDatabaseSources(sources: Source[]) {
     console.log("SOURCES=========================================================================")
-    for (const source in sources) {
+    for (const source of sources) {
+
+
         console.log({
                 source: source
             });
-        continue;
+        // continue;
         
         await prisma.source.create({
             data: {
@@ -49,16 +53,19 @@ async function fillDatabaseSources(sources: Source[]) {
 async function fillDatabaseDependancies(dependencies: Dependency[]) {
     console.log("DEPENDANCIES====================================================================")
     for (const dependency of dependencies) {
-        console.log(inspect({
-                from: dependency.from,
-                to: dependency.to,
-                types: {
-                    create: dependency.types
-                }
 
-            },{depth:Infinity}));
+
+        // console.log(inspect({
+        //         from: dependency.from,
+        //         to: dependency.to,
+        //         types: {
+        //             create: dependency.types
+        //         }
+        //
+        //     },{depth:Infinity}));
+        // 
+        // continue;
         
-        continue;
         await prisma.dependency.create({
             data: {
                 from: dependency.from,
@@ -104,13 +111,12 @@ function embed_args(method_args: Record<string, Arg> | null) {
         const arg: Arg = method_args[arg_name]
         if (arg !== null) {
 
-            const _arg: Arg_flat = {
-                name: arg_name,
+            let _arg = {
                 full_type: arg.full_type,
                 col: arg.src_info.col,
                 line: arg.src_info.line,
                 file: arg.src_info.file,
-                type: arg.type,
+                type: arg.type  ,
             }
             object_args.push(_arg)
         }
@@ -194,24 +200,26 @@ async function fillDatabaseStructures(structures: Structures) {
     for (const structure_name in structures) {
 
         const structure: StructureEntry = structures[structure_name]
-        console.log(inspect( {
-                signature: structure_name,
-                bases: embed("name", structure.bases),
-                contain: embed("name", structure.contains),
-                fields: embed_fields(structure),
-                friend: embed("name", structure.friends),
-                methods: embed_methods(structure),
-                name: structure.name,
-                namespace: structure.namespace,
-                col: structure.src_info.col,
-                line: structure.src_info.line,
-                file: structure.src_info.file,
-                structure_type: structure.structure_type,
-                template_args: embed("arg", structure.template_args),
-                template_parent: structure.template_parent
-            },{depth:Infinity} ));
-        
-        continue;
+
+
+        // console.log(inspect( {
+        //         signature: structure_name,
+        //         bases: embed("name", structure.bases),
+        //         contain: embed("name", structure.contains),
+        //         fields: embed_fields(structure),
+        //         friend: embed("name", structure.friends),
+        //         methods: embed_methods(structure),
+        //         name: structure.name,
+        //         namespace: structure.namespace,
+        //         col: structure.src_info.col,
+        //         line: structure.src_info.line,
+        //         file: structure.src_info.file,
+        //         structure_type: structure.structure_type,
+        //         template_args: embed("arg", structure.template_args),
+        //         template_parent: structure.template_parent
+        //     },{depth:Infinity} ));
+        // 
+        // continue;
         
 
         await prisma.structure.create({

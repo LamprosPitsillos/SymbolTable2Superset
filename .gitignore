@@ -1,2 +1,3 @@
 .devenv
+.env
 node_modules

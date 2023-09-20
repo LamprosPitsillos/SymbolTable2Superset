@@ -72,13 +72,11 @@ export type StructureEntry_flat = {
 
 export type Arg = {
     full_type: string;
-    name: string;
     src_info: SrcInfo;
     type: string;
 }
 export type Arg_flat = {
     full_type: string;
-    name: string;
     col: number;
     file: string;
     line: number;

@@ -69,14 +69,14 @@ model Bases {
     id          Int       @id @default(autoincrement())
     name        String
     structure   Structure @relation(fields: [structureId], references: [id])
-    structureId Int       @unique
+    structureId Int       
 }
 
 model Contain {
     id          Int       @id @default(autoincrement())
     name        String
     structure   Structure @relation(fields: [structureId], references: [id])
-    structureId Int       @unique
+    structureId Int       
 }
 
 model Fields {
@@ -84,7 +84,7 @@ model Fields {
     full_name   String //  "members::A::m" 
     // access Access
     access      String
-    type        String // "type" : "members::A::M"
+    type        String? // "type" : "members::A::M"
     full_type   String // "full_type" : "class members::A::M",
     name        String // "name" : "m",
     // src_info
@@ -92,14 +92,14 @@ model Fields {
     file        String
     line        Int
     structure   Structure @relation(fields: [structureId], references: [id])
-    structureId Int       @unique
+    structureId Int       
 }
 
 model Friends {
     id          Int       @id @default(autoincrement())
     name        String
     Structure   Structure @relation(fields: [structureId], references: [id])
-    structureId Int       @unique
+    structureId Int       
 }
 
 model Definition {
@@ -109,7 +109,7 @@ model Definition {
     col       Int
     line      Int
     file      String
-    type      String
+    type      String?
 
     Method   Method? @relation(fields: [methodId], references: [id])
     methodId Int?
@@ -133,10 +133,10 @@ model Method {
     ret_type     String
     signature    String
     statements   Int
-    templateArgs MethodTemplateArgs[]
+    template_args MethodTemplateArgs[]
     virtual      Boolean
     Structure    Structure            @relation(fields: [structureId], references: [id])
-    structureId  Int                  @unique
+    structureId  Int                  
 }
 
 model MethodTemplateArgs {
@@ -152,7 +152,7 @@ model Args {
     col       Int
     line      Int
     file      String
-    type      String
+    type      String?
     method    Method @relation(fields: [methodId], references: [id])
     methodId  Int    @unique
 }
