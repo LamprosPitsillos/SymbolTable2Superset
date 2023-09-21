@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 import { SymbolTreeJson, Source, Dependency, Structures, StructureEntry, Field, Field_flat, Method, Method_flat, Arg, Arg_flat, Definition, Definition_flat } from './SyntaxTree'
 
 const prisma = new PrismaClient({
-  errorFormat: 'pretty',
+    errorFormat: 'pretty',
 })
 
 import * as fs from 'fs';
@@ -33,27 +33,30 @@ function readClangSyntaxTree(filePath: string): SymbolTreeJson {
 }
 
 async function fillDatabaseSources(sources: Source[]) {
-    console.log("SOURCES=========================================================================")
-    for (const source of sources) {
+    const total = sources.length
+    for (let index = 0; index < total; index++) {
+        const source = sources[index]
 
-
-        console.log({
-                source: source
-            });
+        // console.log({
+        //         source: source
+        //     });
         // continue;
-        
+
         await prisma.source.create({
             data: {
                 source: source
             },
         })
 
+        showLoadingBar(0, "SOURCES", index, total)
     }
+    console.log();
+
 }
 async function fillDatabaseDependancies(dependencies: Dependency[]) {
-    console.log("DEPENDANCIES====================================================================")
-    for (const dependency of dependencies) {
-
+    const total = dependencies.length
+    for (let index = 0; index < total; index++) {
+        const dependency = dependencies[index]
 
         // console.log(inspect({
         //         from: dependency.from,
@@ -65,7 +68,7 @@ async function fillDatabaseDependancies(dependencies: Dependency[]) {
         //     },{depth:Infinity}));
         // 
         // continue;
-        
+
         await prisma.dependency.create({
             data: {
                 from: dependency.from,
@@ -77,7 +80,10 @@ async function fillDatabaseDependancies(dependencies: Dependency[]) {
             },
         })
 
+        showLoadingBar(0, "DEPENDANCIES", index, total)
     }
+    console.log();
+
 }
 function embed_fields(structure: StructureEntry) {
     let object_fields = []
@@ -116,7 +122,7 @@ function embed_args(method_args: Record<string, Arg> | null) {
                 col: arg.src_info.col,
                 line: arg.src_info.line,
                 file: arg.src_info.file,
-                type: arg.type  ,
+                type: arg.type,
             }
             object_args.push(_arg)
         }
@@ -151,8 +157,13 @@ function embed_definitions(method_definitions: Record<string, Definition> | null
 
 }
 function embed_methods(structure: StructureEntry) {
+    if (structure.methods === null) return {}
+
     let object_methods = []
-    for (const method_name in structure.methods) {
+
+    const total = Object.keys(structure.methods).length;
+
+    for (const [index, method_name] of Object.keys(structure.methods).entries()) {
         const method: Method = structure.methods[method_name]
         if (method !== null) {
 
@@ -171,15 +182,18 @@ function embed_methods(structure: StructureEntry) {
                 method_type: method.method_type,
                 name: method.name,
                 ret_type: method.ret_type,
-                signature:method_name,
+                signature: method_name,
                 statements: method.statements,
                 template_args: embed("arg", method.template_args),
                 virtual: method.virtual,
             }
             object_methods.push(_method)
         }
+        // showLoadingBar(0, "STRUCTURE - METHODS", index, total)
 
     }
+
+    // console.log("METHODS DONE");
     if (object_methods.length === 0)
         return {}
     else
@@ -196,11 +210,11 @@ function embed<T>(key: string, array: T[] | null) {
 async function fillDatabaseStructures(structures: Structures) {
 
 
-    console.log("STRUCTURES======================================================================")
-    for (const structure_name in structures) {
+    const total = Object.keys(structures).length;
+
+    for (const [index, structure_name] of Object.keys(structures).entries()) {
 
         const structure: StructureEntry = structures[structure_name]
-
 
         // console.log(inspect( {
         //         signature: structure_name,
@@ -220,7 +234,7 @@ async function fillDatabaseStructures(structures: Structures) {
         //     },{depth:Infinity} ));
         // 
         // continue;
-        
+
 
         await prisma.structure.create({
             data: {
@@ -241,14 +255,39 @@ async function fillDatabaseStructures(structures: Structures) {
             },
         })
 
+        showLoadingBar(0, "STRUCTURES", index, total)
+
     }
+
+    console.log();
 
 
 }
-function fillDatabase(symbol_tree: SymbolTreeJson) {
-    fillDatabaseDependancies(symbol_tree.dependencies)
-    fillDatabaseSources(symbol_tree.sources)
-    fillDatabaseStructures(symbol_tree.structures)
+function showLoadingBar(depth: number, name: string, index: number, total: number) {
+    const percentage = ((index + 1) / total) * 100;
+    const barLength = 55;
+    const completedLength = Math.round((percentage / 100) * barLength);
+    const remainingLength = barLength - completedLength;
+
+    process.stdout.write('\r' + (name.padEnd(25)) + `${Math.round(percentage).toString().padStart(4)}%-[${'='.repeat(completedLength)}${'.'.repeat(remainingLength)}]`)
+
+
+}
+async function dropDatabase() {
+    const tables = ["Dependency", "Structure", "Source"];
+
+    for (const table of tables) {
+        const drop = Prisma.sql`DROP TABLE IF EXISTS ${table}`
+        await prisma.$executeRaw(drop);
+    }
+
+    // Any code you want to run after all tables are dropped
+}
+
+async function fillDatabase(symbol_tree: SymbolTreeJson) {
+    await fillDatabaseSources(symbol_tree.sources)
+    await fillDatabaseDependancies(symbol_tree.dependencies)
+    await fillDatabaseStructures(symbol_tree.structures)
 
 
 }
@@ -262,7 +301,8 @@ async function main() {
     const symbol_tree = readClangSyntaxTree(filePath);
     // console.log(symbol_tree.dependencies[0].types);
 
-    fillDatabase(symbol_tree)
+    // await dropDatabase()
+    await fillDatabase(symbol_tree)
 
 
 }

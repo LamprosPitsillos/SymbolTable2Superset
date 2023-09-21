@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "npx ts-node ./src/main.ts "
   },
   "scripts": {
-    "run": "npx ts-node ./src/main.ts ./STjsons/test_objects_used_by_methods.json",
+    "run": "npx ts-node ./src/main.ts ",
     "seed": "npx prisma db seed",
     "reset": "npx prisma migrate reset"
 

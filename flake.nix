@@ -31,6 +31,7 @@
                   prisma-engines
                   openssl
                   sqlite
+                  nodePackages_latest.ts-node
                   ];
                   dotenv.disableHint = true;
                   languages.javascript.enable = true;

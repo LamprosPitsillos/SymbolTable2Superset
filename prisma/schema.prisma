@@ -143,7 +143,7 @@ model MethodTemplateArgs {
     id       Int    @id @default(autoincrement())
     arg      String
     Method   Method @relation(fields: [methodId], references: [id])
-    methodId Int    @unique
+    methodId Int    
 }
 
 model Args {
@@ -154,7 +154,7 @@ model Args {
     file      String
     type      String?
     method    Method @relation(fields: [methodId], references: [id])
-    methodId  Int    @unique
+    methodId  Int    
 }
 
 // enum Access {
