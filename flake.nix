@@ -37,6 +37,7 @@
                   languages.javascript.enable = true;
                   languages.javascript.package = pkgs.nodejs_20;
                   languages.typescript.enable = true;
+                  services.mysql.enable=true;
                   # enterShell = ''
                   #   hello
                   # '';

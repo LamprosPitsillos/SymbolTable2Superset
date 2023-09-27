@@ -6,155 +6,161 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "mysql"
     url      = env("DATABASE_URL")
 }
 
 model Dependency {
-    id      Int    @id @default(autoincrement())
-    from    String
-    to      String
-    types   Types  @relation(fields: [typesId], references: [id])
-    typesId Int    @unique
+    dependency_id   Int    @id @default(autoincrement())
+    dependency_from String @db.VarChar(255)
+    dependency_to   String
+
+    types   Types @relation(fields: [typesId], references: [id])
+    typesId Int   @unique
 }
 
 model Types {
     id                  Int         @id @default(autoincrement())
-    Inherit             Int         @default(0)
-    Friend              Int         @default(0)
-    NestedClass         Int         @default(0)
     ClassField          Int         @default(0)
-    ClassTemplateParent Int         @default(0)
     ClassTemplateArg    Int         @default(0)
-    MethodReturn        Int         @default(0)
+    ClassTemplateParent Int         @default(0)
+    Dependency          Dependency?
+    Friend              Int         @default(0)
+    Inherit             Int         @default(0)
+    MemberExpr          Int         @default(0)
     MethodArg           Int         @default(0)
     MethodDefinition    Int         @default(0)
-    MemberExpr          Int         @default(0)
+    MethodReturn        Int         @default(0)
     MethodTemplateArgs  Int         @default(0)
-    Dependency          Dependency?
+    NestedClass         Int         @default(0)
 }
 
 model Source {
-    id     Int    @id @default(autoincrement())
-    source String
+    source_id Int    @id @default(autoincrement())
+    source    String
 }
 
 model Structure {
-    id              Int                  @id @default(autoincrement())
-    signature       String
-    bases           Bases[]
-    contain         Contain[]
-    fields          Fields[]
-    friend          Friends[]
-    methods         Method[]
-    name            String
-    namespace       String
-    // TODO: nested_parent 
-    col             Int
-    line            Int
-    file            String
-    structure_type  String
-    template_args   StructTemplateArgs[]
-    template_parent String?
+    structure_id              Int                 @id @default(autoincrement())
+    structure_signature       String              @db.Text
+    structure_bases           Bases[]
+    structure_contain         Contain[]
+    structure_fields          Field[]
+    structure_friend          Friend[]
+    structure_methods         Method[]
+    structure_name            String
+    structure_namespace       String
+    structure_nested_parent   String?
+    structure_col             Int
+    structure_line            Int
+    structure_file            String
+    structure_type            String
+    structure_template_args   StructTemplateArg[]
+    structure_template_parent String?
 }
 
-model StructTemplateArgs {
-    id        Int       @id @default(autoincrement())
-    arg       String
-    structure Structure @relation(fields: [structId], references: [id])
+model StructTemplateArg {
+    struct_template_arg_id Int    @id @default(autoincrement())
+    struct_template_arg    String
+
+    structure Structure @relation(fields: [structId], references: [structure_id])
     structId  Int       @unique
 }
 
 model Bases {
-    id          Int       @id @default(autoincrement())
-    name        String
-    structure   Structure @relation(fields: [structureId], references: [id])
-    structureId Int       
+    bases_id   Int    @id @default(autoincrement())
+    bases_name String
+
+    structure   Structure @relation(fields: [structureId], references: [structure_id])
+    structureId Int
 }
 
 model Contain {
-    id          Int       @id @default(autoincrement())
-    name        String
-    structure   Structure @relation(fields: [structureId], references: [id])
-    structureId Int       
+    contain_id   Int    @id @default(autoincrement())
+    contain_name String
+
+    structure   Structure @relation(fields: [structureId], references: [structure_id])
+    structureId Int
 }
 
-model Fields {
-    id          Int       @id @default(autoincrement())
-    full_name   String //  "members::A::m" 
-    // access Access
-    access      String
-    type        String? // "type" : "members::A::M"
-    full_type   String // "full_type" : "class members::A::M",
-    name        String // "name" : "m",
-    // src_info
-    col         Int
-    file        String
-    line        Int
-    structure   Structure @relation(fields: [structureId], references: [id])
-    structureId Int       
+model Field {
+    field_id        Int     @id @default(autoincrement())
+    field_full_name String //  "members::A::m" 
+    field_access    String
+    field_type      String? // "type" : "members::A::M"
+    field_full_type String // "full_type" : "class members::A::M",
+    field_name      String // "name" : "m",
+    field_col       Int
+    field_file      String
+    field_line      Int
+
+    structure   Structure @relation(fields: [structureId], references: [structure_id])
+    structureId Int
 }
 
-model Friends {
-    id          Int       @id @default(autoincrement())
-    name        String
-    Structure   Structure @relation(fields: [structureId], references: [id])
-    structureId Int       
+model Friend {
+    friend_id   Int       @id @default(autoincrement())
+    friend_name String
+    structure   Structure @relation(fields: [structureId], references: [structure_id])
+    structureId Int
 }
 
 model Definition {
-    id        Int    @id @default(autoincrement())
-    full_type String
-    name      String
-    col       Int
-    line      Int
-    file      String
-    type      String?
+    definition_id        Int     @id @default(autoincrement())
+    definition_full_type String
+    definition_name      String
+    definition_col       Int
+    definition_line      Int
+    definition_file      String
+    definition_type      String?
 
-    Method   Method? @relation(fields: [methodId], references: [id])
+    method   Method? @relation(fields: [methodId], references: [method_id])
     methodId Int?
 }
 
 model Method {
-    id           Int                  @id @default(autoincrement())
-    access       String
-    args         Args[]
-    branches     Int
-    col          Int
-    definitions  Definition[]
-    file         String
-    line         Int
-    lines        Int
-    literals     Int
-    loops        Int
-    max_scope    Int
-    method_type  String //  ex "Constructor_Trivial"
-    name         String
-    ret_type     String
-    signature    String
-    statements   Int
-    template_args MethodTemplateArgs[]
-    virtual      Boolean
-    Structure    Structure            @relation(fields: [structureId], references: [id])
-    structureId  Int                  
+    method_id            Int                 @id @default(autoincrement())
+    method_access        String
+    method_args          Arg[]
+    method_branches      Int
+    method_col           Int
+    method_definitions   Definition[]
+    method_file          String
+    method_line          Int
+    method_lines         Int
+    method_literals      Int
+    method_loops         Int
+    method_max_scope     Int
+    method_type          String //  ex "Constructor_Trivial"
+    method_name          String
+    method_ret_type      String
+    method_signature     String              @db.Text
+    method_statements    Int
+    method_template_args MethodTemplateArg[]
+    method_virtual       Boolean
+
+    structure   Structure @relation(fields: [structureId], references: [structure_id])
+    structureId Int
 }
 
-model MethodTemplateArgs {
-    id       Int    @id @default(autoincrement())
-    arg      String
-    Method   Method @relation(fields: [methodId], references: [id])
-    methodId Int    
+model MethodTemplateArg {
+    method_template_arg_id Int    @id @default(autoincrement())
+    method_template_arg    String
+
+    method   Method @relation(fields: [methodId], references: [method_id])
+    methodId Int
 }
 
-model Args {
-    id        Int    @id @default(autoincrement())
-    full_type String
-    col       Int
-    line      Int
-    file      String
-    type      String?
-    method    Method @relation(fields: [methodId], references: [id])
-    methodId  Int    
+model Arg {
+    arg_id        Int     @id @default(autoincrement())
+    arg_full_type String
+    arg_col       Int
+    arg_line      Int
+    arg_file      String
+    arg_type      String?
+
+    method   Method @relation(fields: [methodId], references: [method_id])
+    methodId Int
 }
 
 // enum Access {

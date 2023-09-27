@@ -7,10 +7,8 @@
     "seed": "npx ts-node ./src/main.ts "
   },
   "scripts": {
-    "run": "npx ts-node ./src/main.ts ",
     "seed": "npx prisma db seed",
-    "reset": "npx prisma migrate reset"
-
+    "reset": "npx prisma migrate reset --skip-seed"
   },
   "keywords": [],
   "author": "",
