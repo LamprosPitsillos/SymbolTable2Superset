@@ -77,29 +77,29 @@ async function fillDatabaseSources(sources: Source[]) {
 }
 async function fillDatabaseDependancies(dependencies: Dependency[]) {
     const total = dependencies.length
+
     for (let index = 0; index < total; index++) {
         const dependency = dependencies[index]
 
-        // console.log(inspect({
-        //         from: dependency.from,
-        //         to: dependency.to,
-        //         types: {
-        //             create: dependency.types
-        //         }
-        //
-        //     },{depth:Infinity}));
-        // 
-        // continue;
-
-        await prisma.dependency.create({
-            data: {
+        const payload = {
                 dependency_from: dependency.from,
                 dependency_to: dependency.to,
                 types: {
                     create: dependency.types
                 }
 
-            },
+            };
+
+        if (values.verbose) {
+        console.log(inspect(payload,{depth:Infinity}));
+        }
+
+        if (values["dry-run"]) {
+            continue;
+        }
+
+        await prisma.dependency.create({
+            data: payload,
         })
 
         showLoadingBar(0, "DEPENDANCIES", index, total)
