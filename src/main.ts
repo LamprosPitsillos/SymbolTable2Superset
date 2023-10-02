@@ -1,13 +1,35 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { SymbolTreeJson, Source, Dependency, Structures, StructureEntry, Field, Field_flat, Method, Method_flat, Arg, Arg_flat, Definition, Definition_flat } from './SyntaxTree'
+import {parseArgs} from 'node:util';
 
+const parse_config : ParseArgsConfig = {
+    options:{
+  'verbose': {
+    type: 'boolean',
+    short: 'v',
+        default: false,
+  },
+  'seed': {
+    type: 'string',
+    short: 's',
+  },
+  'dry-run': {
+    type: 'boolean',
+    short: 'd',
+        default: false
+
+  }
+ }
+};
+
+const {values} = parseArgs(parse_config);
 const prisma = new PrismaClient({
     errorFormat: 'pretty',
 })
 
 import * as fs from 'fs';
 import { exit } from 'process';
-import { inspect } from 'util';
+import { ParseArgsConfig, inspect } from 'util';
 
 /**
  * Pretty prints a JSON file containing a Clang syntax tree.
@@ -216,24 +238,24 @@ async function fillDatabaseStructures(structures: Structures) {
 
         const structure: StructureEntry = structures[structure_name]
 
-        // console.log(inspect( {
-        //         signature: structure_name,
-        //         bases: embed("name", structure.bases),
-        //         contain: embed("name", structure.contains),
-        //         fields: embed_fields(structure),
-        //         friend: embed("name", structure.friends),
-        //         methods: embed_methods(structure),
-        //         name: structure.name,
-        //         namespace: structure.namespace,
-        //         col: structure.src_info.col,
-        //         line: structure.src_info.line,
-        //         file: structure.src_info.file,
-        //         structure_type: structure.structure_type,
-        //         template_args: embed("arg", structure.template_args),
-        //         template_parent: structure.template_parent
-        //     },{depth:Infinity} ));
-        // 
-        // continue;
+        console.log(inspect( {
+                signature: structure_name,
+                bases: embed("name", structure.bases),
+                contain: embed("name", structure.contains),
+                fields: embed_fields(structure),
+                friend: embed("name", structure.friends),
+                methods: embed_methods(structure),
+                name: structure.name,
+                namespace: structure.namespace,
+                col: structure.src_info.col,
+                line: structure.src_info.line,
+                file: structure.src_info.file,
+                structure_type: structure.structure_type,
+                template_args: embed("arg", structure.template_args),
+                template_parent: structure.template_parent
+            },{depth:Infinity} ));
+
+        continue;
 
 
         await prisma.structure.create({
@@ -294,15 +316,12 @@ async function fillDatabase(symbol_tree: SymbolTreeJson) {
 }
 
 async function main() {
-    const filePath = process.argv[2];
-    if (filePath === undefined) {
-        console.log("Provide a filePath to the Syntax Tree json file.")
+    console.log( inspect({ values}));
+    if (values.seed === undefined) {
+        console.log("Provide a filePath to the Syntax Tree json file via ` -s | --seed `.")
         exit(1)
     }
-    const symbol_tree = readClangSyntaxTree(filePath);
-    // console.log(symbol_tree.dependencies[0].types);
-
-    // await dropDatabase()
+    const symbol_tree = readClangSyntaxTree(values.seed as string);
     await fillDatabase(symbol_tree)
 
 
