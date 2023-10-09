@@ -22,7 +22,7 @@ const parse_config : ParseArgsConfig = {
  }
 };
 
-const {values} = parseArgs(parse_config);
+const {values}  = parseArgs(parse_config);
 const prisma = new PrismaClient({
     errorFormat: 'pretty',
 })
@@ -56,27 +56,41 @@ function readClangSyntaxTree(filePath: string): SymbolTreeJson {
 
 async function fillDatabaseSources(sources: Source[]) {
     const total = sources.length
+
+    const verbose = values.verbose
+    const dry =values["dry-run"]
+    const name = `SOURCES${ dry ? "-DRY" : "" }`
+
     for (let index = 0; index < total; index++) {
         const source = sources[index]
+        const payload = {
+                source: source
+            };
 
-        // console.log({
-        //         source: source
-        //     });
-        // continue;
+        if (verbose) {
+        console.log(inspect( payload,{depth:Infinity} ));
+        }else{
+        showLoadingBar(0, name, index, total)
+        }
+
+        if (dry) {
+         continue;   
+        }
 
         await prisma.source.create({
-            data: {
-                source: source
-            },
+            data:payload ,
         })
 
-        showLoadingBar(0, "SOURCES", index, total)
     }
     console.log();
 
 }
 async function fillDatabaseDependancies(dependencies: Dependency[]) {
     const total = dependencies.length
+
+    const verbose = values.verbose
+    const dry =values["dry-run"]
+    const name = `DEPENDANCIES${ dry ? "-DRY" : "" }`
 
     for (let index = 0; index < total; index++) {
         const dependency = dependencies[index]
@@ -90,11 +104,15 @@ async function fillDatabaseDependancies(dependencies: Dependency[]) {
 
             };
 
-        if (values.verbose) {
+        if (verbose) {
         console.log(inspect(payload,{depth:Infinity}));
+        }else{
+  showLoadingBar(0, name, index, total)
         }
 
-        if (values["dry-run"]) {
+      
+
+        if (dry) {
             continue;
         }
 
@@ -102,7 +120,6 @@ async function fillDatabaseDependancies(dependencies: Dependency[]) {
             data: payload,
         })
 
-        showLoadingBar(0, "DEPENDANCIES", index, total)
     }
     console.log();
 
@@ -145,6 +162,7 @@ function embed_args(method_args: Record<string, Arg> | null) {
                 arg_line: arg.src_info.line,
                 arg_file: arg.src_info.file,
                 arg_type: arg.type,
+                arg_name: arg.name,
             }
             object_args.push(_arg)
         }
@@ -211,7 +229,6 @@ function embed_methods(structure: StructureEntry) {
             }
             object_methods.push(_method)
         }
-        // showLoadingBar(0, "STRUCTURE - METHODS", index, total)
 
     }
 
@@ -233,33 +250,14 @@ async function fillDatabaseStructures(structures: Structures) {
 
 
     const total = Object.keys(structures).length;
+    const verbose = values.verbose
+    const dry =values["dry-run"]
+    const name = `STRUCTURES${ dry ? "-DRY" : "" }`
 
     for (const [index, structure_name] of Object.keys(structures).entries()) {
 
         const structure: StructureEntry = structures[structure_name]
-
-        console.log(inspect( {
-                signature: structure_name,
-                bases: embed("name", structure.bases),
-                contain: embed("name", structure.contains),
-                fields: embed_fields(structure),
-                friend: embed("name", structure.friends),
-                methods: embed_methods(structure),
-                name: structure.name,
-                namespace: structure.namespace,
-                col: structure.src_info.col,
-                line: structure.src_info.line,
-                file: structure.src_info.file,
-                structure_type: structure.structure_type,
-                template_args: embed("arg", structure.template_args),
-                template_parent: structure.template_parent
-            },{depth:Infinity} ));
-
-        continue;
-
-
-        await prisma.structure.create({
-            data: {
+        const payload = {
                 structure_signature: structure_name,
                 structure_bases: embed("bases_name", structure.bases),
                 structure_contain: embed("contain_name", structure.contains),
@@ -275,10 +273,23 @@ async function fillDatabaseStructures(structures: Structures) {
                 structure_type: structure.structure_type,
                 structure_template_args: embed("struct_template_arg", structure.template_args),
                 structure_template_parent: structure.template_parent
-            },
+            };
+
+        if (verbose) {
+        console.log(inspect( payload,{depth:Infinity} ));
+        }else{
+        showLoadingBar(0, name, index, total)
+        }
+
+        if (dry) {
+        continue;
+        }
+
+
+        await prisma.structure.create({
+            data: payload,
         })
 
-        showLoadingBar(0, "STRUCTURES", index, total)
 
     }
 
@@ -312,7 +323,6 @@ async function fillDatabase(symbol_tree: SymbolTreeJson) {
     await fillDatabaseDependancies(symbol_tree.dependencies)
     await fillDatabaseStructures(symbol_tree.structures)
 
-
 }
 
 async function main() {
@@ -323,7 +333,6 @@ async function main() {
     }
     const symbol_tree = readClangSyntaxTree(values.seed as string);
     await fillDatabase(symbol_tree)
-
 
 }
 

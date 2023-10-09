@@ -153,10 +153,11 @@ model MethodTemplateArg {
 
 model Arg {
     arg_id        Int     @id @default(autoincrement())
-    arg_full_type String
     arg_col       Int
-    arg_line      Int
     arg_file      String
+    arg_full_type String
+    arg_line      Int
+    arg_name      String
     arg_type      String?
 
     method   Method @relation(fields: [methodId], references: [method_id])

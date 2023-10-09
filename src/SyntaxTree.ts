@@ -35,7 +35,7 @@ export type Field_flat = {
     field_access: string;
     field_col: number;
     field_file: string;
-    field_full_name : string;
+    field_full_name: string;
     field_full_type: string;
     field_line: number;
     field_name: string;
@@ -72,6 +72,7 @@ export type StructureEntry_flat = {
 };
 
 export type Arg = {
+    name: string;
     full_type: string;
     src_info: SrcInfo;
     type: string;
@@ -81,6 +82,7 @@ export type Arg_flat = {
     arg_file: string;
     arg_full_type: string;
     arg_line: number;
+    arg_name: string;
     arg_type: string;
 }
 export type Definition = {
@@ -109,7 +111,7 @@ export type Method = {
     method_type: string;
     name: string;
     ret_type: string;
-    signature:string;
+    signature: string;
     src_info: SrcInfo;
     statements: number;
     template_args: string[] | null;
