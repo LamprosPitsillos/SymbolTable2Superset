@@ -1,28 +1,28 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { SymbolTreeJson, Source, Dependency, Structures, StructureEntry, Field, Field_flat, Method, Method_flat, Arg, Arg_flat, Definition, Definition_flat } from './SyntaxTree'
-import {parseArgs} from 'node:util';
+import { parseArgs } from 'node:util';
 
-const parse_config : ParseArgsConfig = {
-    options:{
-  'verbose': {
-    type: 'boolean',
-    short: 'v',
-        default: false,
-  },
-  'seed': {
-    type: 'string',
-    short: 's',
-  },
-  'dry-run': {
-    type: 'boolean',
-    short: 'd',
-        default: false
+const parse_config: ParseArgsConfig = {
+    options: {
+        'verbose': {
+            type: 'boolean',
+            short: 'v',
+            default: false,
+        },
+        'seed': {
+            type: 'string',
+            short: 's',
+        },
+        'dry-run': {
+            type: 'boolean',
+            short: 'd',
+            default: false
 
-  }
- }
+        }
+    }
 };
 
-const {values}  = parseArgs(parse_config);
+const { values } = parseArgs(parse_config);
 const prisma = new PrismaClient({
     errorFormat: 'pretty',
 })
@@ -58,27 +58,27 @@ async function fillDatabaseSources(sources: Source[]) {
     const total = sources.length
 
     const verbose = values.verbose
-    const dry =values["dry-run"]
-    const name = `SOURCES${ dry ? "-DRY" : "" }`
+    const dry = values["dry-run"]
+    const name = `SOURCES${dry ? "-DRY" : ""}`
 
     for (let index = 0; index < total; index++) {
         const source = sources[index]
         const payload = {
-                source: source
-            };
+            source: source
+        };
 
         if (verbose) {
-        console.log(inspect( payload,{depth:Infinity} ));
-        }else{
-        showLoadingBar(0, name, index, total)
+            console.log(inspect(payload, { depth: Infinity }));
+        } else {
+            showLoadingBar(0, name, index, total)
         }
 
         if (dry) {
-         continue;   
+            continue;
         }
 
         await prisma.source.create({
-            data:payload ,
+            data: payload,
         })
 
     }
@@ -89,28 +89,28 @@ async function fillDatabaseDependancies(dependencies: Dependency[]) {
     const total = dependencies.length
 
     const verbose = values.verbose
-    const dry =values["dry-run"]
-    const name = `DEPENDANCIES${ dry ? "-DRY" : "" }`
+    const dry = values["dry-run"]
+    const name = `DEPENDANCIES${dry ? "-DRY" : ""}`
 
     for (let index = 0; index < total; index++) {
         const dependency = dependencies[index]
 
         const payload = {
-                dependency_from: dependency.from,
-                dependency_to: dependency.to,
-                types: {
-                    create: dependency.types
-                }
+            dependency_from: dependency.from,
+            dependency_to: dependency.to,
+            types: {
+                create: dependency.types
+            }
 
-            };
+        };
 
         if (verbose) {
-        console.log(inspect(payload,{depth:Infinity}));
-        }else{
-  showLoadingBar(0, name, index, total)
+            console.log(inspect(payload, { depth: Infinity }));
+        } else {
+            showLoadingBar(0, name, index, total)
         }
 
-      
+
 
         if (dry) {
             continue;
@@ -156,7 +156,7 @@ function embed_args(method_args: Record<string, Arg> | null) {
         const arg: Arg = method_args[arg_name]
         if (arg !== null) {
 
-            let _arg :Arg_flat = {
+            let _arg: Arg_flat = {
                 arg_full_type: arg.full_type,
                 arg_col: arg.src_info.col,
                 arg_line: arg.src_info.line,
@@ -251,38 +251,38 @@ async function fillDatabaseStructures(structures: Structures) {
 
     const total = Object.keys(structures).length;
     const verbose = values.verbose
-    const dry =values["dry-run"]
-    const name = `STRUCTURES${ dry ? "-DRY" : "" }`
+    const dry = values["dry-run"]
+    const name = `STRUCTURES${dry ? "-DRY" : ""}`
 
     for (const [index, structure_name] of Object.keys(structures).entries()) {
 
         const structure: StructureEntry = structures[structure_name]
         const payload = {
-                structure_signature: structure_name,
-                structure_bases: embed("bases_name", structure.bases),
-                structure_contain: embed("contain_name", structure.contains),
-                structure_fields: embed_fields(structure),
-                structure_friend: embed("friend_name", structure.friends),
-                structure_methods: embed_methods(structure),
-                structure_nested_parent: structure.nested_parent,
-                structure_name: structure.name,
-                structure_namespace: structure.namespace,
-                structure_col: structure.src_info.col,
-                structure_line: structure.src_info.line,
-                structure_file: structure.src_info.file,
-                structure_type: structure.structure_type,
-                structure_template_args: embed("struct_template_arg", structure.template_args),
-                structure_template_parent: structure.template_parent
-            };
+            structure_signature: structure_name,
+            structure_bases: embed("bases_name", structure.bases),
+            structure_contain: embed("contain_name", structure.contains),
+            structure_fields: embed_fields(structure),
+            structure_friend: embed("friend_name", structure.friends),
+            structure_methods: embed_methods(structure),
+            structure_nested_parent: structure.nested_parent,
+            structure_name: structure.name,
+            structure_namespace: structure.namespace,
+            structure_col: structure.src_info.col,
+            structure_line: structure.src_info.line,
+            structure_file: structure.src_info.file,
+            structure_type: structure.structure_type,
+            structure_template_args: embed("struct_template_arg", structure.template_args),
+            structure_template_parent: structure.template_parent
+        };
 
         if (verbose) {
-        console.log(inspect( payload,{depth:Infinity} ));
-        }else{
-        showLoadingBar(0, name, index, total)
+            console.log(inspect(payload, { depth: Infinity }));
+        } else {
+            showLoadingBar(0, name, index, total)
         }
 
         if (dry) {
-        continue;
+            continue;
         }
 
 
@@ -326,7 +326,7 @@ async function fillDatabase(symbol_tree: SymbolTreeJson) {
 }
 
 async function main() {
-    console.log( inspect({ values}));
+    console.log(inspect({ values }));
     if (values.seed === undefined) {
         console.log("Provide a filePath to the Syntax Tree json file via ` -s | --seed `.")
         exit(1)
