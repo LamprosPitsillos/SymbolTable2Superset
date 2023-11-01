@@ -40,6 +40,11 @@ model Source {
     source    String
 }
 
+model Header {
+    header_id Int    @id @default(autoincrement())
+    header    String
+}
+
 model Structure {
     structure_id              Int                 @id @default(autoincrement())
     structure_signature       String              @db.Text

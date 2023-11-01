@@ -138,13 +138,14 @@ export type Method_flat = {
     method_virtual: boolean;
 };
 export type Source = string;
-export type Structures = Record<string, StructureEntry>;
+export type Header = string;
 
+export type Structures = Record<string, StructureEntry>;
 
 export type SymbolTreeJson = {
     dependencies: Dependency[];
     sources: Source[];
+    headers: Header[]|undefined;
     structures: Structures;
 
 }
-
