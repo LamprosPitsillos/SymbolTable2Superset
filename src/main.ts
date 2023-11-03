@@ -18,14 +18,7 @@ main()
 async function main() {
     const symbol_tree: SymbolTreeJson = readClangSyntaxTree(values.seed as string);
     console.time()
-    line_len_from_ST(symbol_tree)
-        .then((report) => {
-            console.log(report);
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-
+    console.log(await line_len_from_ST(symbol_tree));
     console.timeEnd()
 
     // await fillDatabase(symbol_tree)

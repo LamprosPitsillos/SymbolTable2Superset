@@ -66,50 +66,6 @@ export function un_commented_line_iter(line: Line) {
     }
 
 }
-function un_commented_line_rec(line: Line, last_index: number = 0): Line {
-
-    if (line.str.length === 0) {
-        line.real_len = 0
-        return line;
-    }
-
-    if (line.str.length === last_index) {
-        return line;
-    }
-
-
-    if (line.comment_open) {
-        let comment_close_idx = line.str.indexOf("*/", last_index);
-        if (comment_close_idx === -1) return line;
-        line.comment_open = false;
-        return un_commented_line_rec(line, comment_close_idx + 2)
-    }
-
-    let line_comment_idx = line.str.indexOf("//", last_index);
-
-    let comment_open_idx = line.str.indexOf("/*", last_index);
-    if (comment_open_idx === -1) {
-        line.real_len += (line_comment_idx === -1) ? (line.str.length - last_index) : (line_comment_idx - last_index);
-        return line;
-    }
-    if (line_comment_idx !== -1 && line_comment_idx < comment_open_idx) {
-        line.real_len += line_comment_idx - last_index;
-        return line
-    }
-
-    line.real_len += comment_open_idx - last_index;
-    line.comment_open = true;
-
-    let comment_close_idx = line.str.indexOf("*/", last_index);
-    if (comment_close_idx === -1) {
-        return line;
-    }
-    line.comment_open = false;
-
-    let ret = un_commented_line_rec(line, comment_close_idx + 2)
-    return ret;
-}
-
 
 async function processFile(fileName: string) {
     const result = [];
@@ -128,9 +84,6 @@ async function processFile(fileName: string) {
         real_len: 0
     };
 
-    // if (!result[fileName]) {
-    //     result[fileName] = [];
-    // }
     for await (const line of rl) {
         line_wrap.str = line
         un_commented_line_iter(line_wrap); // You need to define your uncomment function
@@ -143,12 +96,3 @@ async function processFile(fileName: string) {
 
     return result;
 }
-
-// processFile("/home/inferno/UoC/Ptixiaki/CodeAnalysisMeta/Code-Smell-Detector/GraphGenerator/GraphGeneration/GraphGeneration.cpp")
-//     .then((result) => {
-//         console.log(result);
-//     })
-//     .catch((error) => {
-//         console.error(error);
-//     });
-
