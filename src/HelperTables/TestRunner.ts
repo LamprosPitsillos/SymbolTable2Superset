@@ -1,4 +1,4 @@
-export type Test = {
+type Test = {
     input: any;
     output: any;
 }

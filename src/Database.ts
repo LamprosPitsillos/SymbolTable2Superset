@@ -3,6 +3,7 @@ import { inspect } from 'util';
 import { values } from "./CLI"
 import { SymbolTreeJson, Source, Dependency, Structures, StructureEntry, Field, Field_flat, Method, Method_flat, Arg, Arg_flat, Definition, Definition_flat, Header } from './SyntaxTree'
 import * as fs from 'fs';
+import { detectNamingConvention } from './HelperTables/Naming';
 
 export const prisma = new PrismaClient({
     errorFormat: 'pretty',
@@ -64,14 +65,14 @@ async function fillDatabaseSources(sources: Source[]) {
 
 }
 
-async function fillDatabaseHeaders(headers: Header[]|undefined) {
+async function fillDatabaseHeaders(headers: Header[] | undefined) {
 
 
     const verbose = values.verbose;
     const dry = values["dry-run"];
     const name = `HEADERS${dry ? "-DRY" : ""}`;
 
-    if (headers === undefined ) {
+    if (headers === undefined) {
 
         console.log(`${name.padEnd(25)} No headers for ST generated...`)
         return;
@@ -162,6 +163,7 @@ async function fillDatabaseStructures(structures: Structures) {
             structure_methods: embed_methods(structure),
             structure_nested_parent: structure.nested_parent,
             structure_name: structure.name,
+            structure_name_convention: detectNamingConvention(structure.name),
             structure_namespace: structure.namespace,
             structure_col: structure.src_info.col,
             structure_line: structure.src_info.line,
@@ -228,6 +230,7 @@ function embed_fields(structure: StructureEntry) {
                 field_access: field.access,
                 field_full_type: field.full_type,
                 field_name: field.name,
+                field_name_convention: detectNamingConvention(field.name),
                 field_type: field.type,
                 field_col: field.src_info.col,
                 field_file: field.src_info.file,
@@ -256,6 +259,7 @@ function embed_args(method_args: Record<string, Arg> | null) {
                 arg_file: arg.src_info.file,
                 arg_type: arg.type,
                 arg_name: arg.name,
+                arg_name_convention: detectNamingConvention(arg.name),
             }
             object_args.push(_arg)
         }
@@ -274,6 +278,7 @@ function embed_definitions(method_definitions: Record<string, Definition> | null
 
             const _definition: Definition_flat = {
                 definition_name: definition_name,
+                definition_name_convention: detectNamingConvention(definition_name),
                 definition_full_type: definition.full_type,
                 definition_col: definition.src_info.col,
                 definition_line: definition.src_info.line,
@@ -314,6 +319,7 @@ function embed_methods(structure: StructureEntry) {
                 method_max_scope: method.max_scope,
                 method_type: method.method_type,
                 method_name: method.name,
+                method_name_convention: detectNamingConvention(method.name),
                 method_ret_type: method.ret_type,
                 method_signature: method_name,
                 method_statements: method.statements,

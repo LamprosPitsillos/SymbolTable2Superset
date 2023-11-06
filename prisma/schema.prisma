@@ -19,6 +19,14 @@ model Dependency {
     typesId Int   @unique
 }
 
+model Rule {
+    rule_id   Int    @id @default(autoincrement())
+    rule_name String @db.VarChar(255)
+    rule_min  Int
+    rule_max  Int
+    rule_enum String @db.VarChar(255)
+}
+
 model Types {
     id                  Int         @id @default(autoincrement())
     ClassField          Int         @default(0)
@@ -54,6 +62,7 @@ model Structure {
     structure_friend          Friend[]
     structure_methods         Method[]
     structure_name            String
+    structure_name_convention String
     structure_namespace       String
     structure_nested_parent   String?
     structure_col             Int
@@ -89,15 +98,16 @@ model Contain {
 }
 
 model Field {
-    field_id        Int     @id @default(autoincrement())
-    field_full_name String //  "members::A::m" 
-    field_access    String
-    field_type      String? // "type" : "members::A::M"
-    field_full_type String // "full_type" : "class members::A::M",
-    field_name      String // "name" : "m",
-    field_col       Int
-    field_file      String
-    field_line      Int
+    field_id              Int     @id @default(autoincrement())
+    field_full_name       String //  "members::A::m" 
+    field_access          String
+    field_type            String? // "type" : "members::A::M"
+    field_full_type       String // "full_type" : "class members::A::M",
+    field_name            String // "name" : "m",
+    field_name_convention String
+    field_col             Int
+    field_file            String
+    field_line            Int
 
     structure   Structure @relation(fields: [structureId], references: [structure_id])
     structureId Int
@@ -111,38 +121,41 @@ model Friend {
 }
 
 model Definition {
-    definition_id        Int     @id @default(autoincrement())
+    definition_id        Int    @id @default(autoincrement())
     definition_full_type String
     definition_name      String
-    definition_col       Int
-    definition_line      Int
-    definition_file      String
-    definition_type      String?
+
+    definition_name_convention String
+    definition_col             Int
+    definition_line            Int
+    definition_file            String
+    definition_type            String?
 
     method   Method? @relation(fields: [methodId], references: [method_id])
     methodId Int?
 }
 
 model Method {
-    method_id            Int                 @id @default(autoincrement())
-    method_access        String
-    method_args          Arg[]
-    method_branches      Int
-    method_col           Int
-    method_definitions   Definition[]
-    method_file          String
-    method_line          Int
-    method_lines         Int
-    method_literals      Int
-    method_loops         Int
-    method_max_scope     Int
-    method_type          String //  ex "Constructor_Trivial"
-    method_name          String
-    method_ret_type      String
-    method_signature     String              @db.Text
-    method_statements    Int
-    method_template_args MethodTemplateArg[]
-    method_virtual       Boolean
+    method_id              Int                 @id @default(autoincrement())
+    method_access          String
+    method_args            Arg[]
+    method_branches        Int
+    method_col             Int
+    method_definitions     Definition[]
+    method_file            String
+    method_line            Int
+    method_lines           Int
+    method_literals        Int
+    method_loops           Int
+    method_max_scope       Int
+    method_type            String //  ex "Constructor_Trivial"
+    method_name            String
+    method_name_convention String
+    method_ret_type        String
+    method_signature       String              @db.Text
+    method_statements      Int
+    method_template_args   MethodTemplateArg[]
+    method_virtual         Boolean
 
     structure   Structure @relation(fields: [structureId], references: [structure_id])
     structureId Int
@@ -157,13 +170,14 @@ model MethodTemplateArg {
 }
 
 model Arg {
-    arg_id        Int     @id @default(autoincrement())
-    arg_col       Int
-    arg_file      String
-    arg_full_type String
-    arg_line      Int
-    arg_name      String
-    arg_type      String?
+    arg_id              Int     @id @default(autoincrement())
+    arg_col             Int
+    arg_file            String
+    arg_full_type       String
+    arg_line            Int
+    arg_name            String
+    arg_name_convention String
+    arg_type            String?
 
     method   Method @relation(fields: [methodId], references: [method_id])
     methodId Int

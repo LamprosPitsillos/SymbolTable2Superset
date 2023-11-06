@@ -1,6 +1,6 @@
-import { Test, TestFunc, TestRun } from "./TestRunner";
+import { Tests, TestRun } from "./TestRunner";
 import { un_commented_line_iter, Line } from './Lines'
-let cpp_lines: Test[][] = [
+let cpp_lines: Tests = [
     [
         { input: 'hello "/* thehre */" baby /* jjj // ', output: 26 },
         { input: ' hlhflh /* jfjf /* // */ hello /* hhahah get fucked */', output: 7 }
