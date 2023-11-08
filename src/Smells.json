@@ -3,7 +3,7 @@
         {
             "name": "Too many parameters",
             "description": "Detects methods with an excessive amount of parameters",
-            "smells": {
+            "rules": {
                 "max_argc": {
                     "formal_name": "Maximum method arguments",
                     "type": "range",
@@ -21,7 +21,7 @@
         {
             "name": "Too many function literals",
             "description": "Detects excessive method literal count",
-            "smells": {
+            "rules": {
                 "max_literals": {
                     "formal_name": "Maximum method literals",
                     "type": "range",
@@ -39,7 +39,7 @@
         {
             "name": "Too many locals",
             "description": "Detects excessive method local variable declarations",
-            "smells": {
+            "rules": {
                 "max_locals": {
                     "formal_name": "Maximum method locals",
                     "type": "range",
@@ -57,7 +57,7 @@
         {
             "name": "Long function",
             "description": "Detects methods with too many statemets or too many lines",
-            "smells": {
+            "rules": {
                 "max_statements": {
                     "formal_name": "Maximum method statement count",
                     "type": "range",
@@ -87,7 +87,7 @@
         {
             "name": "Cyclomatic complexity",
             "description": "Detects methods with excessive branches (if, switch, while, for, conintue, break, return)",
-            "smells": {
+            "rules": {
                 "max_loops": {
                     "formal_name": "Maximum method loops",
                     "type": "range",
@@ -117,7 +117,7 @@
         {
             "name": "Excessively long identifier",
             "description": "Detects identifiers with too many characters",
-            "smells": {
+            "rules": {
                 "max_id_len": {
                     "formal_name": "Maximum length of an identifier",
                     "type": "range",
@@ -135,7 +135,7 @@
         {
             "name": "Excessively long line of code",
             "description": "Detects too long lines of un-commented code",
-            "smells": {
+            "rules": {
                 "max_line_len": {
                     "formal_name": "Maximum length of a line in characters",
                     "type": "range",
@@ -153,10 +153,10 @@
         {
             "name": "Naming conventions",
             "description": "Detects identifiers that do not follow naming conventions",
-            "smells": {
+            "rules": {
                 "class_names": {
                     "formal_name": "Class names",
-                    "value": "UpperCamelCase",
+                    "value": "PASCAL_CASE",
                     "type": "enum",
                     "valid": [
                         "FLAT_CASE",
@@ -170,12 +170,13 @@
                         "SCREAMING_KEBAB_CASE",
                         "TRAIN_CASE",
                         "CAMEL_CASE",
-                        "UNKNOWN"
+                        "UNKNOWN",
+                        "ANY"
                     ]
                 },
                 "method_names": {
                     "formal_name": "Method names",
-                    "value": "UpperCamelCase",
+                    "value": "PASCAL_CASE",
                     "type": "enum",
                     "valid": [
                         "FLAT_CASE",
@@ -189,12 +190,13 @@
                         "SCREAMING_KEBAB_CASE",
                         "TRAIN_CASE",
                         "CAMEL_CASE",
-                        "UNKNOWN"
+                        "UNKNOWN",
+                        "ANY"
                     ]
                 },
                 "var_names": {
                     "formal_name": "Variable names",
-                    "value": "any",
+                    "value": "ANY",
                     "type": "enum",
                     "valid": [
                         "FLAT_CASE",
@@ -208,7 +210,8 @@
                         "SCREAMING_KEBAB_CASE",
                         "TRAIN_CASE",
                         "CAMEL_CASE",
-                        "UNKNOWN"
+                        "UNKNOWN",
+                        "ANY"
                     ]
                 }
             }
@@ -216,7 +219,7 @@
         {
             "name": "Nested scopes",
             "description": "Detects methods that nest scopes too deep",
-            "smells": {
+            "rules": {
                 "max_nested_scopes": {
                     "formal_name": "Maximum depth of nested blocks",
                     "type": "range",
@@ -234,7 +237,7 @@
         {
             "name": "Circular dependency",
             "description": "Detects circlular dependency between structures",
-            "smells": {
+            "rules": {
                 "max_circle_len": {
                     "formal_name": "Maximum circle length",
                     "type": "range",
@@ -252,7 +255,7 @@
         {
             "name": "Large Class",
             "description": "Detects structures with too many methods or fields",
-            "smells": {
+            "rules": {
                 "max_methods": {
                     "formal_name": "Maximum count of methods",
                     "type": "range",
@@ -279,14 +282,17 @@
                 },
                 "public_only": {
                     "formal_name": "Public only",
-                    "val": true,
+                    "value": true,
                     "type": "boolean"
                 }
             }
         },
         {
-            "smells": {
+            "name": "Large Line Width",
+            "description": "Detects lines with too many characters",
+            "rules": {
                 "max_src_lines": {
+                    "formal_name": "Maximum source line width",
                     "type": "range",
                     "value": [
                         619,
@@ -298,6 +304,7 @@
                     ]
                 },
                 "max_header_lines": {
+                    "formal_name": "Maximum header line width",
                     "type": "range",
                     "value": [
                         200,
@@ -313,7 +320,7 @@
         {
             "name": "Inappropriate Intimacy",
             "description": "@argument max_member_expr: Max count of member expr from one class to any other class.",
-            "smells": {
+            "rules": {
                 "max_member_expr": {
                     "formal_name": "Maximum member expressions",
                     "type": "range",
@@ -331,12 +338,12 @@
         {
             "name": "Non virtual base destructor",
             "description": "Flags destructors of base classes that are not virtual.",
-            "smells": {}
+            "rules": {}
         },
         {
             "name": "Redundant protected access",
             "description": "Detects protected member functions or variables declared in classes that are not inherited from.",
-            "smells": {
+            "rules": {
                 "max_unneeded_protected": {
                     "formal_name": "Maximum unnecessary protected",
                     "type": "range",
@@ -354,7 +361,7 @@
         {
             "name": "Excessive function overloading",
             "description": "Detects functions that are overloaded too many times.",
-            "smells": {
+            "rules": {
                 "max_overload": {
                     "formal_name": "Maximum overloads of a function",
                     "type": "range",
@@ -372,7 +379,7 @@
         {
             "name": "Many dependencies",
             "description": "Detects structures that directly depend upon too many other structures. Indirect dependencies are not counted.",
-            "smells": {
+            "rules": {
                 "max_direct_dependencies": {
                     "formal_name": "Maximum direct dependencies",
                     "type": "range",

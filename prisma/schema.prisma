@@ -20,11 +20,12 @@ model Dependency {
 }
 
 model Rule {
-    rule_id   Int    @id @default(autoincrement())
-    rule_name String @db.VarChar(255)
-    rule_min  Int
-    rule_max  Int
-    rule_enum String @db.VarChar(255)
+    rule_id   Int      @id @default(autoincrement())
+    rule_name String   @db.VarChar(255)
+    rule_min  Int?
+    rule_max  Int?
+    rule_enum String?  @db.VarChar(255)
+    rule_bool Boolean?
 }
 
 model Types {

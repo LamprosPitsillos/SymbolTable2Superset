@@ -1,17 +1,29 @@
 import { Prisma, PrismaClient } from '@prisma/client'
 import { inspect } from 'util';
 import { values } from "./CLI"
-import { SymbolTreeJson, Source, Dependency, Structures, StructureEntry, Field, Field_flat, Method, Method_flat, Arg, Arg_flat, Definition, Definition_flat, Header } from './SyntaxTree'
-import * as fs from 'fs';
+import { Rule_db, getRules, getSmells } from './Rules';
+
+import {
+    SymbolTreeJson,
+    Source, Dependency,
+    Structures, StructureEntry,
+    Field, Field_flat,
+    Method, Method_flat,
+    Arg, Arg_flat,
+    Definition, Definition_flat,
+    Header
+} from './SyntaxTree'
+import { readFileSync, PathLike } from 'fs';
 import { detectNamingConvention } from './HelperTables/Naming';
+
 
 export const prisma = new PrismaClient({
     errorFormat: 'pretty',
 })
 
-export function readClangSyntaxTree(filePath: string): SymbolTreeJson {
+export function readClangSyntaxTree(filePath: PathLike): SymbolTreeJson {
     try {
-        const jsonContent = fs.readFileSync(filePath, 'ascii');
+        const jsonContent = readFileSync(filePath, 'ascii');
         const syntaxTree = JSON.parse(jsonContent);
         return syntaxTree;
     } catch (error) {
@@ -32,6 +44,51 @@ export async function fillDatabase(symbol_tree: SymbolTreeJson) {
     await fillDatabaseStructures(symbol_tree.structures)
 
 }
+
+export async function fillDatabaseRules(rules_file: PathLike) {
+
+    const verbose = values.verbose
+    const dry = values["dry-run"]
+    const name = `RULES${dry ? "-DRY" : ""}`
+
+
+    const smells = await getSmells(rules_file)
+
+    if (smells === undefined) { throw Error }
+    const rules = getRules(smells)
+    const total = rules.length
+    const done = total + 1
+    const payload: Rule_db[] = [];
+
+    for (let index = 0; index < total; index++) {
+        const rule = rules[index]
+        payload.push({
+            rule_name: rule.name,
+            rule_min: rule.min,
+            rule_max: rule.max,
+            rule_enum: rule.enum,
+            rule_bool: rule.bool
+        });
+        showLoadingBar(0, name, index, done)
+    }
+
+    if (verbose) {
+        console.log(inspect(payload, { depth: Infinity }));
+    }
+
+    if (dry) {
+        return;
+    }
+
+    // await prisma.rule.createMany({
+    //     data: payload,
+    // })
+
+    setTimeout(() => {
+        showLoadingBar(0, name, total, done)
+    }, 1000);
+}
+
 
 async function fillDatabaseSources(sources: Source[]) {
     const total = sources.length
