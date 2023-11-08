@@ -15,6 +15,7 @@ import {
 } from './SyntaxTree'
 import { readFileSync, PathLike } from 'fs';
 import { detectNamingConvention } from './HelperTables/Naming';
+import { line_len_from_ST, processFile } from './HelperTables/Lines';
 
 
 export const prisma = new PrismaClient({
@@ -57,7 +58,7 @@ export async function fillDatabaseRules(rules_file: PathLike) {
     if (smells === undefined) { throw Error }
     const rules = getRules(smells)
     const total = rules.length
-    const done = total + 1
+    const done = total + total / 90;
     const payload: Rule_db[] = [];
 
     for (let index = 0; index < total; index++) {
@@ -77,6 +78,7 @@ export async function fillDatabaseRules(rules_file: PathLike) {
     }
 
     if (dry) {
+        console.log();
         return;
     }
 
@@ -84,41 +86,61 @@ export async function fillDatabaseRules(rules_file: PathLike) {
     //     data: payload,
     // })
 
-    setTimeout(() => {
-        showLoadingBar(0, name, total, done)
-    }, 1000);
+    showLoadingBar(0, name, done - 1, done)
+    console.log();
+
 }
 
+async function fillDatabaseLines(ST: SymbolTreeJson) {
+    await line_len_from_ST(ST)
+
+}
 
 async function fillDatabaseSources(sources: Source[]) {
     const total = sources.length
+    const done = total + total / 90
 
     const verbose = values.verbose
     const dry = values["dry-run"]
     const name = `SOURCES${dry ? "-DRY" : ""}`
 
+    const payload = []
     for (let index = 0; index < total; index++) {
         const source = sources[index]
-        const payload = {
-            source: source
-        };
+        const lines = await processFile(source)
+        const lines_payload = []
 
-        if (verbose) {
-            console.log(inspect(payload, { depth: Infinity }));
-        } else {
-            showLoadingBar(0, name, index, total)
+        for (const line of lines) {
+            lines_payload.push({ line_len: line })
         }
 
-        if (dry) {
-            continue;
-        }
+        payload.push({
+            source: source,
+            line: {
+                // create: lines_payload
+                create: embed("line_len", lines)
+            }
+        });
 
-        await prisma.source.create({
-            data: payload,
-        })
-
+        showLoadingBar(0, name, index, done)
     }
+
+    if (verbose) {
+        console.log(inspect(payload, { depth: Infinity }));
+    }
+
+    if (dry) {
+        console.log();
+        return;
+    }
+
+    // await prisma.source.createMany({
+    //     data: payload,
+    // })
+
+    showLoadingBar(0, name, done - 1, done)
     console.log();
+
 
 }
 
@@ -135,67 +157,85 @@ async function fillDatabaseHeaders(headers: Header[] | undefined) {
         return;
     }
     const total = headers.length;
+    const done = total + total / 90;
+
+    const payload = []
 
     for (let index = 0; index < total; index++) {
         const header = headers[index]
-        const payload = {
-            header: header
-        };
 
-        if (verbose) {
-            console.log(inspect(payload, { depth: Infinity }));
-        } else {
-            showLoadingBar(0, name, index, total)
+        const lines = await processFile(header)
+        const lines_payload = []
+        for (const line of lines) {
+            lines_payload.push({ line_len: line })
         }
 
-        if (dry) {
-            continue;
-        }
+        payload.push({
+            header: header,
+            line: {
+                create: lines_payload
+            }
+        });
 
-        await prisma.header.create({
-            data: payload,
-        })
-
+        showLoadingBar(0, name, index, done)
     }
+
+    if (verbose) console.log(inspect(payload, { depth: Infinity }));
+
+    if (dry) {
+        console.log();
+        return;
+    }
+
+    // await prisma.header.createMany({
+    //     data: payload,
+    // })
+
+    showLoadingBar(0, name, done - 1, done)
     console.log();
 
 }
 async function fillDatabaseDependancies(dependencies: Dependency[]) {
     const total = dependencies.length
+    const done = total + total / 90
 
     const verbose = values.verbose
     const dry = values["dry-run"]
     const name = `DEPENDANCIES${dry ? "-DRY" : ""}`
 
+    const payload = []
     for (let index = 0; index < total; index++) {
         const dependency = dependencies[index]
 
-        const payload = {
+        payload.push({
             dependency_from: dependency.from,
             dependency_to: dependency.to,
+            typesId: index,
             types: {
                 create: dependency.types
             }
 
-        };
+        });
 
-        if (verbose) {
-            console.log(inspect(payload, { depth: Infinity }));
-        } else {
-            showLoadingBar(0, name, index, total)
-        }
-
-
-
-        if (dry) {
-            continue;
-        }
-
-        await prisma.dependency.create({
-            data: payload,
-        })
-
+        showLoadingBar(0, name, index, done)
     }
+
+    if (verbose) {
+        console.log(inspect(payload, { depth: Infinity }));
+    }
+
+
+
+    if (dry) {
+        console.log();
+        return;
+    }
+
+    // await prisma.dependency.createMany({
+    //     data: payload,
+    // })
+
+    showLoadingBar(0, name, done - 1, done)
     console.log();
 
 }
@@ -204,14 +244,16 @@ async function fillDatabaseStructures(structures: Structures) {
 
 
     const total = Object.keys(structures).length;
+    const done = total + total / 90;
     const verbose = values.verbose
     const dry = values["dry-run"]
     const name = `STRUCTURES${dry ? "-DRY" : ""}`
 
+    const payload = [];
     for (const [index, structure_name] of Object.keys(structures).entries()) {
 
         const structure: StructureEntry = structures[structure_name]
-        const payload = {
+        payload.push({
             structure_signature: structure_name,
             structure_bases: embed("bases_name", structure.bases),
             structure_contain: embed("contain_name", structure.contains),
@@ -228,26 +270,24 @@ async function fillDatabaseStructures(structures: Structures) {
             structure_type: structure.structure_type,
             structure_template_args: embed("struct_template_arg", structure.template_args),
             structure_template_parent: structure.template_parent
-        };
+        });
 
-        if (verbose) {
-            console.log(inspect(payload, { depth: Infinity }));
-        } else {
-            showLoadingBar(0, name, index, total)
-        }
-
-        if (dry) {
-            continue;
-        }
-
-
-        await prisma.structure.create({
-            data: payload,
-        })
-
-
+        showLoadingBar(0, name, index, done)
     }
 
+    if (verbose) console.log(inspect(payload, { depth: Infinity }));
+
+    if (dry) {
+        console.log();
+        return;
+    }
+
+
+    // await prisma.structure.createMany({
+    //     data: payload,
+    // })
+
+    showLoadingBar(0, name, done - 1, done)
     console.log();
 
 

@@ -1,4 +1,4 @@
-import { prisma, readClangSyntaxTree, fillDatabase, fillDatabaseRules } from "./Database"
+import { prisma, readClangSyntaxTree, fillDatabase } from "./Database"
 import { line_len_from_ST } from './HelperTables/Lines'
 import { name_analyse } from "./HelperTables/Naming";
 import { SymbolTreeJson } from "./SyntaxTree";
@@ -20,9 +20,9 @@ async function main() {
     const symbol_tree: SymbolTreeJson = readClangSyntaxTree(values.seed as string);
     // console.log(await line_len_from_ST(symbol_tree));
     // name_analyse(symbol_tree);
-    fillDatabaseRules("./src/Smells.json")
-
-    // await fillDatabase(symbol_tree)
+    // fillDatabaseRules("./src/Smells.json")
+    // console.log(await line_len_from_ST(symbol_tree))
+    await fillDatabase(symbol_tree)
 
 }
 

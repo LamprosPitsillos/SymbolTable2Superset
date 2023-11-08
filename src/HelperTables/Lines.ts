@@ -16,7 +16,6 @@ export async function line_len_from_ST(ST: SymbolTreeJson): Promise<Record<strin
     return report;
 }
 
-
 export type Line = {
     str: string,
     comment_open: boolean;
@@ -67,7 +66,7 @@ export function un_commented_line_iter(line: Line) {
 
 }
 
-async function processFile(fileName: string) {
+export async function processFile(fileName: string) {
     const result = [];
 
     const fileStream = fs.createReadStream(fileName);

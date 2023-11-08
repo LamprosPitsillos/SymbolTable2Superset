@@ -16,7 +16,7 @@ model Dependency {
     dependency_to   String
 
     types   Types @relation(fields: [typesId], references: [id])
-    typesId Int   @unique
+    typesId Int @unique 
 }
 
 model Rule {
@@ -33,7 +33,6 @@ model Types {
     ClassField          Int         @default(0)
     ClassTemplateArg    Int         @default(0)
     ClassTemplateParent Int         @default(0)
-    Dependency          Dependency?
     Friend              Int         @default(0)
     Inherit             Int         @default(0)
     MemberExpr          Int         @default(0)
@@ -42,16 +41,33 @@ model Types {
     MethodReturn        Int         @default(0)
     MethodTemplateArgs  Int         @default(0)
     NestedClass         Int         @default(0)
+    Dependency          Dependency?
 }
 
 model Source {
-    source_id Int    @id @default(autoincrement())
+    source_id Int          @id @default(autoincrement())
     source    String
+    line      SourceLine[]
 }
 
 model Header {
-    header_id Int    @id @default(autoincrement())
+    header_id Int          @id @default(autoincrement())
     header    String
+    line      HeaderLine[]
+}
+
+model HeaderLine {
+    line_id  Int    @id @default(autoincrement())
+    line_len Int
+    header   Header @relation(fields: [headerId], references: [header_id])
+    headerId Int
+}
+
+model SourceLine {
+    line_id  Int    @id @default(autoincrement())
+    line_len Int
+    source   Source @relation(fields: [sourceId], references: [source_id])
+    sourceId Int
 }
 
 model Structure {
