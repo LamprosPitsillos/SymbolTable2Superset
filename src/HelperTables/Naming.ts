@@ -22,11 +22,11 @@ https://en.wikipedia.org/wiki/Naming_convention_(programming)#Common_elements
 const flatCaseRegex = /^[a-z][a-z0-9]*$/;
 const upperCaseRegex = /^[A-Z][A-Z0-9]*$/;
 const camelCaseRegex = /^[a-z][a-z0-9]+(?:[A-Z][A-Za-z0-9]+)*$/;
-const pascalCaseRegex = /^[A-Z][a-z0-9]+(?:[A-Z][A-Za-z0-9]+)*$/;
+const pascalCaseRegex = /^[A-Z][a-zA-Z0-9]+(?:[A-Z][A-Za-z0-9]+)*$/;
 const snakeCaseRegex = /^[a-z][a-z0-9]+(?:_[a-z0-9]+)*$/;
 const screamingSnakeCaseRegex = /^[A-Z][A-Z_0-9]+$/;
 const camelSnakeCaseRegex = /^[a-z][a-z0-9]+(?:_[A-Z0-9][A-Za-z0-9]+)*$/;
-const pascalSnakeCaseRegex = /^[A-Z][a-z0-9]+(?:_[A-Z0-9][A-Za-z0-9]+)*$/;
+const pascalSnakeCaseRegex = /^[A-Z][a-zA-Z0-9]+(?:_[A-Z0-9][A-Za-z0-9]+)*$/;
 const kebabCaseRegex = /^[a-z][a-z0-9]+(?:-[a-z0-9]+)*$/;
 const screamingKebabCaseRegex = /^[A-Z][A-Z0-9]+(?:-[A-Z0-9]+)*$/;
 const trainCaseRegex = /^[A-Z][a-zA-Z0-9]+(?:_[A-Z0-9][a-zA-Z0-9]+)*$/;
@@ -46,18 +46,20 @@ export enum NamingConvention {
     UNKNOWN = "UNKNOWN",
 }
 
-export function detectNamingConvention(name: string): string {
+export function detectNamingConvention(name: string): string|null {
+    if (name.startsWith("operator") || name[0] === '~') {
+        return null
+    }
     if (flatCaseRegex.test(name)) {
         return NamingConvention.FLAT_CASE;
-    }
-    else if (pascalCaseRegex.test(name)) {
+    } else if (upperCaseRegex.test(name)) {
+        return NamingConvention.UPPERCASE;
+    } else if (pascalCaseRegex.test(name)) {
         return NamingConvention.PASCAL_CASE;
     } else if (snakeCaseRegex.test(name)) {
         return NamingConvention.SNAKE_CASE;
     } else if (kebabCaseRegex.test(name)) {
         return NamingConvention.KEBAB_CASE;
-    } else if (upperCaseRegex.test(name)) {
-        return NamingConvention.UPPERCASE;
     } else if (screamingSnakeCaseRegex.test(name)) {
         return NamingConvention.SCREAMING_SNAKE_CASE;
     } else if (camelSnakeCaseRegex.test(name)) {
@@ -71,7 +73,6 @@ export function detectNamingConvention(name: string): string {
     } else if (camelCaseRegex.test(name)) {
         return NamingConvention.CAMEL_CASE;
     }
-
     return NamingConvention.UNKNOWN;
 }
 
@@ -79,7 +80,7 @@ export function name_analyse(ST: SymbolTreeJson) {
 
     for (const structure_id in ST.structures) {
         const structure = ST.structures[structure_id];
-        console.log( `${structure.name} -> ${detectNamingConvention(structure.name)}`);
+        console.log(`${structure.name} -> ${detectNamingConvention(structure.name)}`);
         for (const method_id in structure.methods) {
             const method = structure.methods[method_id];
 

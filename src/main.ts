@@ -18,11 +18,6 @@ main()
 
 async function main() {
     const symbol_tree: SymbolTreeJson = readClangSyntaxTree(values.seed as string);
-    // console.log(await line_len_from_ST(symbol_tree));
-    // name_analyse(symbol_tree);
-    // fillDatabaseRules("./src/Smells.json")
-    // console.log(await line_len_from_ST(symbol_tree))
-    await fillDatabase(symbol_tree)
-
+    await fillDatabase(symbol_tree,"./src/Smells.json")
 }
 

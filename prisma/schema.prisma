@@ -79,7 +79,7 @@ model Structure {
     structure_friend          Friend[]
     structure_methods         Method[]
     structure_name            String
-    structure_name_convention String
+    structure_name_convention String?
     structure_namespace       String
     structure_nested_parent   String?
     structure_col             Int
@@ -121,7 +121,7 @@ model Field {
     field_type            String? // "type" : "members::A::M"
     field_full_type       String // "full_type" : "class members::A::M",
     field_name            String // "name" : "m",
-    field_name_convention String
+    field_name_convention String?
     field_col             Int
     field_file            String
     field_line            Int
@@ -142,7 +142,7 @@ model Definition {
     definition_full_type String
     definition_name      String
 
-    definition_name_convention String
+    definition_name_convention String?
     definition_col             Int
     definition_line            Int
     definition_file            String
@@ -167,7 +167,7 @@ model Method {
     method_max_scope       Int
     method_type            String //  ex "Constructor_Trivial"
     method_name            String
-    method_name_convention String
+    method_name_convention String?
     method_ret_type        String
     method_signature       String              @db.Text
     method_statements      Int
@@ -193,7 +193,7 @@ model Arg {
     arg_full_type       String
     arg_line            Int
     arg_name            String
-    arg_name_convention String
+    arg_name_convention String?
     arg_type            String?
 
     method   Method @relation(fields: [methodId], references: [method_id])

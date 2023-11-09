@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient, HeaderLine, Structure } from '@prisma/client'
 import { inspect } from 'util';
 import { values } from "./CLI"
 import { Rule_db, getRules, getSmells } from './Rules';
@@ -8,14 +8,14 @@ import {
     Source, Dependency,
     Structures, StructureEntry,
     Field, Field_flat,
-    Method, Method_flat,
+    Method,
     Arg, Arg_flat,
     Definition, Definition_flat,
     Header
 } from './SyntaxTree'
 import { readFileSync, PathLike } from 'fs';
 import { detectNamingConvention } from './HelperTables/Naming';
-import { line_len_from_ST, processFile } from './HelperTables/Lines';
+import { processFile } from './HelperTables/Lines';
 
 
 export const prisma = new PrismaClient({
@@ -38,11 +38,12 @@ export function readClangSyntaxTree(filePath: PathLike): SymbolTreeJson {
     }
 }
 
-export async function fillDatabase(symbol_tree: SymbolTreeJson) {
+export async function fillDatabase(symbol_tree: SymbolTreeJson, rules_path: PathLike) {
     await fillDatabaseSources(symbol_tree.sources)
     await fillDatabaseHeaders(symbol_tree.headers)
     await fillDatabaseDependancies(symbol_tree.dependencies)
     await fillDatabaseStructures(symbol_tree.structures)
+    await fillDatabaseRules(rules_path)
 
 }
 
@@ -82,63 +83,47 @@ export async function fillDatabaseRules(rules_file: PathLike) {
         return;
     }
 
-    // await prisma.rule.createMany({
-    //     data: payload,
-    // })
+    await prisma.rule.createMany({
+        data: payload,
+    })
 
     showLoadingBar(0, name, done - 1, done)
     console.log();
 
 }
 
-async function fillDatabaseLines(ST: SymbolTreeJson) {
-    await line_len_from_ST(ST)
-
-}
 
 async function fillDatabaseSources(sources: Source[]) {
     const total = sources.length
-    const done = total + total / 90
 
     const verbose = values.verbose
     const dry = values["dry-run"]
     const name = `SOURCES${dry ? "-DRY" : ""}`
 
-    const payload = []
     for (let index = 0; index < total; index++) {
         const source = sources[index]
         const lines = await processFile(source)
-        const lines_payload = []
 
-        for (const line of lines) {
-            lines_payload.push({ line_len: line })
+        const payload = {
+            source: source,
+            line: embed("line_len", lines)
+        };
+
+        showLoadingBar(0, name, index, total)
+
+        if (verbose) {
+            console.log(inspect(payload, { depth: Infinity }));
         }
 
-        payload.push({
-            source: source,
-            line: {
-                // create: lines_payload
-                create: embed("line_len", lines)
-            }
-        });
+        if (dry) {
+            continue;
+        }
 
-        showLoadingBar(0, name, index, done)
+        await prisma.source.create({
+            data: payload,
+        })
+
     }
-
-    if (verbose) {
-        console.log(inspect(payload, { depth: Infinity }));
-    }
-
-    if (dry) {
-        console.log();
-        return;
-    }
-
-    // await prisma.source.createMany({
-    //     data: payload,
-    // })
-
-    showLoadingBar(0, name, done - 1, done)
     console.log();
 
 
@@ -157,85 +142,68 @@ async function fillDatabaseHeaders(headers: Header[] | undefined) {
         return;
     }
     const total = headers.length;
-    const done = total + total / 90;
-
-    const payload = []
 
     for (let index = 0; index < total; index++) {
         const header = headers[index]
 
         const lines = await processFile(header)
-        const lines_payload = []
-        for (const line of lines) {
-            lines_payload.push({ line_len: line })
+
+        const payload = {
+            header: header,
+            line: embed("line_len", lines)
+        };
+
+        if (verbose) console.log(inspect(payload, { depth: Infinity })); else
+            showLoadingBar(0, name, index, total)
+
+        if (dry) {
+            continue;
         }
 
-        payload.push({
-            header: header,
-            line: {
-                create: lines_payload
-            }
-        });
+        await prisma.header.create({
+            data: payload,
+        })
 
-        showLoadingBar(0, name, index, done)
     }
 
-    if (verbose) console.log(inspect(payload, { depth: Infinity }));
-
-    if (dry) {
-        console.log();
-        return;
-    }
-
-    // await prisma.header.createMany({
-    //     data: payload,
-    // })
-
-    showLoadingBar(0, name, done - 1, done)
     console.log();
-
 }
 async function fillDatabaseDependancies(dependencies: Dependency[]) {
     const total = dependencies.length
-    const done = total + total / 90
 
     const verbose = values.verbose
     const dry = values["dry-run"]
     const name = `DEPENDANCIES${dry ? "-DRY" : ""}`
 
-    const payload = []
     for (let index = 0; index < total; index++) {
         const dependency = dependencies[index]
 
-        payload.push({
+        const payload = {
             dependency_from: dependency.from,
             dependency_to: dependency.to,
-            typesId: index,
             types: {
                 create: dependency.types
             }
 
-        });
+        };
 
-        showLoadingBar(0, name, index, done)
+
+        if (verbose) {
+            console.log(inspect(payload, { depth: Infinity }));
+        } else
+            showLoadingBar(0, name, index, total)
+
+
+
+        if (dry) {
+            continue;
+        }
+
+        await prisma.dependency.create({
+            data: payload,
+        })
+
     }
-
-    if (verbose) {
-        console.log(inspect(payload, { depth: Infinity }));
-    }
-
-
-
-    if (dry) {
-        console.log();
-        return;
-    }
-
-    // await prisma.dependency.createMany({
-    //     data: payload,
-    // })
-
-    showLoadingBar(0, name, done - 1, done)
     console.log();
 
 }
@@ -244,16 +212,14 @@ async function fillDatabaseStructures(structures: Structures) {
 
 
     const total = Object.keys(structures).length;
-    const done = total + total / 90;
     const verbose = values.verbose
     const dry = values["dry-run"]
     const name = `STRUCTURES${dry ? "-DRY" : ""}`
 
-    const payload = [];
     for (const [index, structure_name] of Object.keys(structures).entries()) {
 
         const structure: StructureEntry = structures[structure_name]
-        payload.push({
+        const payload = {
             structure_signature: structure_name,
             structure_bases: embed("bases_name", structure.bases),
             structure_contain: embed("contain_name", structure.contains),
@@ -270,24 +236,23 @@ async function fillDatabaseStructures(structures: Structures) {
             structure_type: structure.structure_type,
             structure_template_args: embed("struct_template_arg", structure.template_args),
             structure_template_parent: structure.template_parent
-        });
+        };
 
-        showLoadingBar(0, name, index, done)
+
+        if (verbose) console.log(inspect(payload, { depth: Infinity })); else
+            showLoadingBar(0, name, index, total)
+
+        if (dry) {
+            continue;
+        }
+
+
+        await prisma.structure.create({
+            data: payload,
+        })
+
+
     }
-
-    if (verbose) console.log(inspect(payload, { depth: Infinity }));
-
-    if (dry) {
-        console.log();
-        return;
-    }
-
-
-    // await prisma.structure.createMany({
-    //     data: payload,
-    // })
-
-    showLoadingBar(0, name, done - 1, done)
     console.log();
 
 
@@ -396,9 +361,7 @@ function embed_methods(structure: StructureEntry) {
 
     let object_methods = []
 
-    const total = Object.keys(structure.methods).length;
-
-    for (const [index, method_name] of Object.keys(structure.methods).entries()) {
+    for (const [_, method_name] of Object.keys(structure.methods).entries()) {
         const method: Method = structure.methods[method_name]
         if (method !== null) {
 
@@ -428,12 +391,12 @@ function embed_methods(structure: StructureEntry) {
 
     }
 
-    // console.log("METHODS DONE");
     if (object_methods.length === 0)
         return {}
     else
         return { create: object_methods }
 }
+// function embed<T>(key: string, array: T[] | null): { create: { [k in keyof T]: T }[] } | {} {
 function embed<T>(key: string, array: T[] | null) {
     let object_list = {}
     if (array !== null)

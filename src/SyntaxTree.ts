@@ -39,7 +39,7 @@ export type Field_flat = {
     field_full_type: string;
     field_line: number;
     field_name: string;
-    field_name_convention:string;
+    field_name_convention:string|null;
     field_type: string;
 };
 
@@ -64,7 +64,7 @@ export type StructureEntry_flat = {
     structure_friends: string[] | null;
     structure_methods: Record<string, Method> | null;
     structure_name: string;
-    structure_name_convention: string;
+    structure_name_convention: string|null;
     structure_namespace: string;
     structure_nested_parent: string | null;
     structure_src_info: SrcInfo;
@@ -85,7 +85,7 @@ export type Arg_flat = {
     arg_full_type: string;
     arg_line: number;
     arg_name: string;
-    arg_name_convention: string;
+    arg_name_convention: string|null;
     arg_type: string;
 }
 export type Definition = {
@@ -97,7 +97,7 @@ export type Definition = {
 export type Definition_flat = {
     definition_col: number;
     definition_name: string;
-    definition_name_convention: string;
+    definition_name_convention: string|null;
     definition_file: string;
     definition_full_type: string;
     definition_line: number;
@@ -136,7 +136,7 @@ export type Method_flat = {
     method_max_scope: number;
     method_type: string;
     method_name: string;
-    method_name_convention: string;
+    method_name_convention: string|null;
     method_ret_type: string;
     method_statements: number;
     method_template_args: string[] | null;
