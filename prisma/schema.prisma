@@ -58,6 +58,7 @@ model Header {
 
 model HeaderLine {
     line_id  Int    @id @default(autoincrement())
+    line_num Int
     line_len Int
     header   Header @relation(fields: [headerId], references: [header_id])
     headerId Int
@@ -65,6 +66,7 @@ model HeaderLine {
 
 model SourceLine {
     line_id  Int    @id @default(autoincrement())
+    line_num Int
     line_len Int
     source   Source @relation(fields: [sourceId], references: [source_id])
     sourceId Int

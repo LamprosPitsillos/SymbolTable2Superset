@@ -319,7 +319,7 @@
         },
         {
             "name": "Inappropriate Intimacy",
-            "description": "@argument max_member_expr: Max count of member expr from one class to any other class.",
+            "description": "Max count of member expr from one class to any other class.",
             "rules": {
                 "max_member_expr": {
                     "formal_name": "Maximum member expressions",

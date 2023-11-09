@@ -16,6 +16,7 @@ import {
 import { readFileSync, PathLike } from 'fs';
 import { detectNamingConvention } from './HelperTables/Naming';
 import { processFile } from './HelperTables/Lines';
+import { assert } from 'console';
 
 
 export const prisma = new PrismaClient({
@@ -106,7 +107,13 @@ async function fillDatabaseSources(sources: Source[]) {
 
         const payload = {
             source: source,
-            line: embed("line_len", lines)
+            // line: { create: [{ line_num: 10, line_len: 10 }] }
+            // line: { create: [{ line_num: 10, line_len: 10 }] }
+            line: { create: embed_many({ line_len: lines, line_num: Array.from({ length: lines.length }, (_, index) => index + 1) }) as { line_len: number, line_num: number }[] }
+            // {
+            //     // create: embed_many({ "line_len": lines, "line_num": lines })
+            //     
+            // }
         };
 
         showLoadingBar(0, name, index, total)
@@ -150,7 +157,7 @@ async function fillDatabaseHeaders(headers: Header[] | undefined) {
 
         const payload = {
             header: header,
-            line: embed("line_len", lines)
+            line: { create: embed_many({ line_len: lines, line_num: Array.from({ length: lines.length }, (_, index) => index + 1) }) as { line_len: number, line_num: number }[] }
         };
 
         if (verbose) console.log(inspect(payload, { depth: Infinity })); else
@@ -396,10 +403,35 @@ function embed_methods(structure: StructureEntry) {
     else
         return { create: object_methods }
 }
-// function embed<T>(key: string, array: T[] | null): { create: { [k in keyof T]: T }[] } | {} {
 function embed<T>(key: string, array: T[] | null) {
     let object_list = {}
     if (array !== null)
         object_list = { create: array.map(value => ({ [key]: value })) }
     return object_list
 }
+/*
+* From { line_len : number[], line_num : number[] }
+* To   { line_len : number, line_num : number }[]
+*/
+function embed_many<T>(data: Record<string, T[]>): Record<string, T>[] {
+    const entries = Object.entries(data)
+    const entries_len = entries.length
+    const embedable = []
+
+    // Check if all arrays are of the same length
+    const arrays_len = entries[0][1].length
+    for (let idx = 1; idx < entries_len; idx++) {
+        if (entries[idx][1].length !== arrays_len) throw Error("Array len miss-much.");
+    }
+
+    for (let idx = 0; idx < arrays_len; idx++) {
+        let row: Record<string, any> = {}
+        for (const key of Object.keys(data)) {
+            row[key] = data[key][idx]
+        }
+        embedable.push(row)
+
+    }
+    return embedable
+}
+
