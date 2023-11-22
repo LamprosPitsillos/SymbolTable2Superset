@@ -62,8 +62,8 @@
                     "formal_name": "Maximum method statement count",
                     "type": "range",
                     "value": [
-                        70,
-                        161
+                        60,
+                        100
                     ],
                     "valid": [
                         20,

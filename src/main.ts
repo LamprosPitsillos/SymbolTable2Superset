@@ -1,6 +1,4 @@
-import { prisma, readClangSyntaxTree, fillDatabase } from "./Database"
-import { line_len_from_ST } from './HelperTables/Lines'
-import { name_analyse } from "./HelperTables/Naming";
+import { prisma, readClangSyntaxTree, fillDatabase, fillDatabaseRules } from "./Database"
 import { SymbolTreeJson } from "./SyntaxTree";
 import { values } from "./CLI"
 
@@ -17,7 +15,14 @@ main()
 
 
 async function main() {
-    const symbol_tree: SymbolTreeJson = readClangSyntaxTree(values.seed as string);
-    await fillDatabase(symbol_tree,"./src/Smells.json")
-}
+    const rules_path = "./src/Smells.json";
+    if (values["update-rules"]) {
+        await fillDatabaseRules(rules_path)
+        return
+    }
 
+    return
+    const symbol_tree: SymbolTreeJson = readClangSyntaxTree(values.seed as string);
+    await fillDatabase(symbol_tree)
+    await fillDatabaseRules(rules_path)
+}

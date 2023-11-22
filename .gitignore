@@ -1,3 +1,5 @@
 .devenv
 .env
 node_modules
+prisma/migrations
+STjsons

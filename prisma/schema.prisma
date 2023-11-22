@@ -16,12 +16,11 @@ model Dependency {
     dependency_to   String
 
     types   Types @relation(fields: [typesId], references: [id])
-    typesId Int @unique 
+    typesId Int @unique
 }
 
 model Rule {
-    rule_id   Int      @id @default(autoincrement())
-    rule_name String   @db.VarChar(255)
+    rule_name String  @id @db.VarChar(255)
     rule_min  Int?
     rule_max  Int?
     rule_enum String?  @db.VarChar(255)
@@ -118,7 +117,7 @@ model Contain {
 
 model Field {
     field_id              Int     @id @default(autoincrement())
-    field_full_name       String //  "members::A::m" 
+    field_full_name       String //  "members::A::m"
     field_access          String
     field_type            String? // "type" : "members::A::M"
     field_full_type       String // "full_type" : "class members::A::M",

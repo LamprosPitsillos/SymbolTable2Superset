@@ -16,7 +16,6 @@ import {
 import { readFileSync, PathLike } from 'fs';
 import { detectNamingConvention } from './HelperTables/Naming';
 import { processFile } from './HelperTables/Lines';
-import { assert } from 'console';
 
 
 export const prisma = new PrismaClient({
@@ -39,12 +38,11 @@ export function readClangSyntaxTree(filePath: PathLike): SymbolTreeJson {
     }
 }
 
-export async function fillDatabase(symbol_tree: SymbolTreeJson, rules_path: PathLike) {
+export async function fillDatabase(symbol_tree: SymbolTreeJson) {
     await fillDatabaseSources(symbol_tree.sources)
     await fillDatabaseHeaders(symbol_tree.headers)
     await fillDatabaseDependancies(symbol_tree.dependencies)
     await fillDatabaseStructures(symbol_tree.structures)
-    await fillDatabaseRules(rules_path)
 
 }
 
@@ -72,6 +70,22 @@ export async function fillDatabaseRules(rules_file: PathLike) {
             rule_enum: rule.enum,
             rule_bool: rule.bool
         });
+        await prisma.rule.upsert({
+            where: { rule_name: rule.name },
+            update: {
+                rule_min: rule.min,
+                rule_max: rule.max,
+                rule_enum: rule.enum,
+                rule_bool: rule.bool
+            },
+            create: {
+                rule_name: rule.name,
+                rule_min: rule.min,
+                rule_max: rule.max,
+                rule_enum: rule.enum,
+                rule_bool: rule.bool
+            },
+        })
         showLoadingBar(0, name, index, done)
     }
 
@@ -83,10 +97,6 @@ export async function fillDatabaseRules(rules_file: PathLike) {
         console.log();
         return;
     }
-
-    await prisma.rule.createMany({
-        data: payload,
-    })
 
     showLoadingBar(0, name, done - 1, done)
     console.log();
@@ -112,7 +122,7 @@ async function fillDatabaseSources(sources: Source[]) {
             line: { create: embed_many({ line_len: lines, line_num: Array.from({ length: lines.length }, (_, index) => index + 1) }) as { line_len: number, line_num: number }[] }
             // {
             //     // create: embed_many({ "line_len": lines, "line_num": lines })
-            //     
+            //
             // }
         };
 
@@ -434,4 +444,3 @@ function embed_many<T>(data: Record<string, T[]>): Record<string, T>[] {
     }
     return embedable
 }
-
