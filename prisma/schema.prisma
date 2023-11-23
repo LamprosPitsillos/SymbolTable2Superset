@@ -47,20 +47,26 @@ model Source {
     source_id Int          @id @default(autoincrement())
     source    String
     line      SourceLine[]
+
+    @@index([source])
 }
 
 model Header {
     header_id Int          @id @default(autoincrement())
     header    String
     line      HeaderLine[]
+
+    @@index([header])
 }
 
 model HeaderLine {
-    line_id  Int    @id @default(autoincrement())
+    line_id  Int    @id() @default(autoincrement())
     line_num Int
     line_len Int
     header   Header @relation(fields: [headerId], references: [header_id])
     headerId Int
+
+    @@index([line_id,line_num])
 }
 
 model SourceLine {
@@ -69,6 +75,8 @@ model SourceLine {
     line_len Int
     source   Source @relation(fields: [sourceId], references: [source_id])
     sourceId Int
+
+    @@index([line_id,line_num])
 }
 
 model Structure {
