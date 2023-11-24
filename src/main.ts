@@ -16,12 +16,11 @@ main()
 
 async function main() {
     const rules_path = "./src/Smells.json";
-    if (values["update-rules"]) {
+    if (values["update-rules"] && values.seed === undefined) {
         await fillDatabaseRules(rules_path)
         return
     }
 
-    return
     const symbol_tree: SymbolTreeJson = readClangSyntaxTree(values.seed as string);
     await fillDatabase(symbol_tree)
     await fillDatabaseRules(rules_path)

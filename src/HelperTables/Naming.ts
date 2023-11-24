@@ -16,6 +16,7 @@ https://en.wikipedia.org/wiki/Naming_convention_(programming)#Common_elements
 | two-words     | kebab-case, dash-case, lisp-case, spinal-case                 |
 | TWO-WORDS     | TRAIN-CASE, COBOL-CASE, SCREAMING-KEBAB-CASE                  |
 | Two-Words     | Train-Case,HTTP-Header-Case                                   |
+| _two_words    | INTERNAL                                                      |
 
 */
 
@@ -43,7 +44,9 @@ export enum NamingConvention {
     SCREAMING_KEBAB_CASE = "SCREAMING_KEBAB_CASE",
     TRAIN_CASE = "TRAIN_CASE",
     CAMEL_CASE = "CAMEL_CASE",
+    INTERNAL = "INTERNAL",
     UNKNOWN = "UNKNOWN",
+    ANONYMOUS = "ANONYMOUS"
 }
 
 export function detectNamingConvention(name: string): string|null {
@@ -72,6 +75,10 @@ export function detectNamingConvention(name: string): string|null {
         return NamingConvention.TRAIN_CASE;
     } else if (camelCaseRegex.test(name)) {
         return NamingConvention.CAMEL_CASE;
+    } else if (name[0] === '_') {
+        return NamingConvention.INTERNAL;
+    } else if (name === "") {
+        return NamingConvention.ANONYMOUS;
     }
     return NamingConvention.UNKNOWN;
 }
@@ -119,7 +126,7 @@ export function name_analyse(ST: SymbolTreeJson) {
 //                 report.push(Util.get_smell_obj(src, msg, smell_level));
 //             }
 //
-//             
+//
 //             for(const method_id in structure.methods){
 //                 const method = structure.methods[method_id];
 //                 let clean_method_id = Util.get_clean_identifier(method_id);
@@ -197,7 +204,7 @@ export function name_analyse(ST: SymbolTreeJson) {
 //                 report.push(Util.get_smell_obj(src, msg, smell_level));
 //             }
 //
-//             
+//
 //             for(const method_id in structure.methods){
 //                 const method = structure.methods[method_id];
 //                 let clean_method_id = Util.get_clean_identifier(method_id);
@@ -247,17 +254,17 @@ export function name_analyse(ST: SymbolTreeJson) {
 // }
 //
 // /**
-//  *  
+//  *
 //  * @returns the amount of chars missing in the best match.
 //  */
 // function regex_non_matching_chars(str, regex){
 //     const matches = str.match(regex);
-//     if(matches === null) 
+//     if(matches === null)
 //         return str.length;
 //     let longest_match_len = 0;
 //
 //     for(const match of matches){
-//         if(match.length > longest_match_len) 
+//         if(match.length > longest_match_len)
 //             longest_match_len = match.length;
 //     }
 //

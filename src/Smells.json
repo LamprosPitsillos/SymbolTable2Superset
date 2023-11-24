@@ -176,7 +176,7 @@
                 },
                 "method_names": {
                     "formal_name": "Method names",
-                    "value": "PASCAL_CASE",
+                    "value": "CAMEL_CASE",
                     "type": "enum",
                     "valid": [
                         "FLAT_CASE",

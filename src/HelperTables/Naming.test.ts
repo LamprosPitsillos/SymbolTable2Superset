@@ -36,6 +36,9 @@ const variableNames: Tests = [
     [{ input: "wxPoint2DDouble", output: NamingConvention.CAMEL_CASE }],
     [{ input: "wxPoint2DInt", output: NamingConvention.CAMEL_CASE }],
     [{ input: "ASTDeclListAction", output: NamingConvention.PASCAL_CASE }],
+    [{ input: "_wxPoint2DInt", output: NamingConvention.INTERNAL }],
+    [{ input: "_wx2DInt", output: NamingConvention.INTERNAL }],
+    [{ input: "", output: NamingConvention.ANONYMOUS }],
     // Add any additional test cases here.
 ];
 
