@@ -288,11 +288,11 @@
             }
         },
         {
-            "name": "Large Line Width",
-            "description": "Detects lines with too many characters",
+            "name": "Large Line Count",
+            "description": "Detects Files with too many lines",
             "rules": {
                 "max_src_lines": {
-                    "formal_name": "Maximum source line width",
+                    "formal_name": "Maximum source line count",
                     "type": "range",
                     "value": [
                         619,
@@ -304,7 +304,7 @@
                     ]
                 },
                 "max_header_lines": {
-                    "formal_name": "Maximum header line width",
+                    "formal_name": "Maximum header line count",
                     "type": "range",
                     "value": [
                         200,
