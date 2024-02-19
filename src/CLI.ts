@@ -103,7 +103,7 @@ ${bold("Arguments")}:
     let helpMessage = '';
     for (const optionName in parse_config.options) {
         const option = parse_config.options[optionName];
-        const cmd = `${bold(`--${option.short}/-${optionName}`)}`;
+        const cmd = `${bold(`-${option.short}/--${optionName}`)}`;
         const desc = `${option.desc ? `${option.desc}` : ''}`;
 
         const type = `${italic(`{ type: ${option.type}${option.default !== undefined ? `, default: ${option.default}` : ''} }`)}`;

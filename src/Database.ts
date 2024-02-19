@@ -14,8 +14,8 @@ import {
     Header
 } from './SyntaxTree'
 import { readFileSync, PathLike } from 'fs';
-import { detectNamingConvention } from './HelperTables/Naming';
-import { processFile } from './HelperTables/Lines';
+import { detectNamingConvention } from './HelperFunctions/Naming';
+import { processFile } from './HelperFunctions/Lines';
 
 
 export const prisma = new PrismaClient({
@@ -42,7 +42,7 @@ export async function fillDatabase(symbol_tree: SymbolTreeJson) {
     await fillDatabaseSources(symbol_tree.sources)
     await fillDatabaseHeaders(symbol_tree.headers)
     await fillDatabaseDependancies(symbol_tree.dependencies)
-    await fillDatabaseStructures(symbol_tree.structures)
+    await fillDatabaseStructures(symbol_tree.structures, symbol_tree.dependencies)
 
 }
 
@@ -225,13 +225,21 @@ async function fillDatabaseDependancies(dependencies: Dependency[]) {
 
 }
 
-async function fillDatabaseStructures(structures: Structures) {
+async function fillDatabaseStructures(structures: Structures, dependencies: Dependency[]) {
 
 
     const total = Object.keys(structures).length;
+
     const verbose = values.verbose
     const dry = values["dry-run"]
     const name = `STRUCTURES${dry ? "-DRY" : ""}`
+
+    const base_structs = new Set()
+    for (const dependency of dependencies) {
+        if (dependency.types["Inherit"]) {
+            base_structs.add(dependency.from)
+        }
+    }
 
     for (const [index, structure_name] of Object.keys(structures).entries()) {
 
@@ -255,8 +263,11 @@ async function fillDatabaseStructures(structures: Structures) {
             structure_template_parent: structure.template_parent
         };
 
-
-        if (verbose) console.log(inspect(payload, { depth: Infinity })); else
+        const is_base = base_structs.has(payload.structure_signature)
+        if (verbose) {
+            console.log(inspect(payload, { depth: Infinity }));
+            console.log(is_base ? "= Is BASE =" : "")
+        } else
             showLoadingBar(0, name, index, total)
 
         if (dry) {
@@ -264,9 +275,11 @@ async function fillDatabaseStructures(structures: Structures) {
         }
 
 
-        await prisma.structure.create({
+        const struct = await prisma.structure.create({
             data: payload,
         })
+
+        if (is_base) await prisma.baseStructure.create({ data: { base_structure_id: struct.structure_id } })
 
 
     }

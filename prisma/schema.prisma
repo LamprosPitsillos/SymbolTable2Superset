@@ -16,11 +16,11 @@ model Dependency {
     dependency_to   String
 
     types   Types @relation(fields: [typesId], references: [id])
-    typesId Int @unique
+    typesId Int   @unique
 }
 
 model Rule {
-    rule_name String  @id @db.VarChar(255)
+    rule_name String   @id @db.VarChar(255)
     rule_min  Int?
     rule_max  Int?
     rule_enum String?  @db.VarChar(255)
@@ -66,7 +66,7 @@ model HeaderLine {
     header   Header @relation(fields: [headerId], references: [header_id])
     headerId Int
 
-    @@index([line_id,line_num])
+    @@index([line_id, line_num])
 }
 
 model SourceLine {
@@ -76,7 +76,7 @@ model SourceLine {
     source   Source @relation(fields: [sourceId], references: [source_id])
     sourceId Int
 
-    @@index([line_id,line_num])
+    @@index([line_id, line_num])
 }
 
 model Structure {
@@ -209,8 +209,10 @@ model Arg {
     methodId Int
 }
 
-// enum Access {
-//     private
-//     public
-//     protected
-// }
+//------------------------------------------------------------------//
+//                          Helper Tables                           //
+//------------------------------------------------------------------//
+
+model BaseStructure {
+    base_structure_id Int @id
+}
