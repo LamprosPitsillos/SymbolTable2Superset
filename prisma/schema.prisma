@@ -216,3 +216,10 @@ model Arg {
 model BaseStructure {
     base_structure_id Int @id
 }
+
+model DependencyCircle {
+    dependency_circle_id   Int    @id @default(autoincrement())
+    dependency_circle      Int
+    dependency_struct_name String
+    dependency_struct_next String
+}

@@ -16,6 +16,7 @@ import {
 import { readFileSync, PathLike } from 'fs';
 import { detectNamingConvention } from './HelperFunctions/Naming';
 import { processFile } from './HelperFunctions/Lines';
+import { get_dependency_circles } from './HelperTables/Circuits';
 
 
 export const prisma = new PrismaClient({
@@ -43,9 +44,50 @@ export async function fillDatabase(symbol_tree: SymbolTreeJson) {
     await fillDatabaseHeaders(symbol_tree.headers)
     await fillDatabaseDependancies(symbol_tree.dependencies)
     await fillDatabaseStructures(symbol_tree.structures, symbol_tree.dependencies)
+    await fillDatabaseDependancyCircles(symbol_tree.dependencies)
+
 
 }
 
+export async function fillDatabaseDependancyCircles(dependencies: Dependency[]) {
+    let circles = get_dependency_circles(dependencies)
+
+    const total = circles.length
+
+    const verbose = values.verbose
+    const dry = values["dry-run"]
+    const name = `CIRCLES${dry ? "-DRY" : ""}`
+
+    for (let index = 0; index < total; index++) {
+        const circle = circles[index]
+        for (let node_index = 0; node_index < circle.length; node_index++) {
+
+            const payload = {
+                dependency_circle: index,
+                dependency_struct_name: circle[node_index],
+                dependency_struct_next: circle[node_index + 1] ?? circle[0],
+            }
+
+            showLoadingBar(0, name, index, total)
+
+            if (verbose) {
+                console.log(inspect(payload, { depth: Infinity }));
+            }
+
+            if (dry) {
+                continue;
+            }
+
+            await prisma.dependencyCircle.create({
+                data: payload,
+            })
+        }
+
+    }
+    console.log();
+
+
+}
 export async function fillDatabaseRules(rules_file: PathLike) {
 
     const verbose = values.verbose
