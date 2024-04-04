@@ -1,4 +1,4 @@
-import { SymbolTreeJson } from "../SyntaxTree";
+import { SymbolTableJson } from "../SymbolTable";
 /*
 
 https://en.wikipedia.org/wiki/Naming_convention_(programming)#Common_elements
@@ -83,7 +83,7 @@ export function detectNamingConvention(name: string): string | null {
     return NamingConvention.UNKNOWN;
 }
 
-export function name_analyse(ST: SymbolTreeJson) {
+export function name_analyse(ST: SymbolTableJson) {
 
     for (const structure_id in ST.structures) {
         const structure = ST.structures[structure_id];

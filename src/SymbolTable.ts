@@ -147,7 +147,7 @@ export type Header = string;
 
 export type Structures = Record<string, StructureEntry>;
 
-export type SymbolTreeJson = {
+export type SymbolTableJson = {
     dependencies: Dependency[];
     sources: Source[];
     headers: Header[] | undefined;

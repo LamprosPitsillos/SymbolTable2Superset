@@ -1,5 +1,5 @@
-import { prisma, readClangSyntaxTree, fillDatabase, fillDatabaseRules } from "./Database"
-import { SymbolTreeJson } from "./SyntaxTree";
+import { prisma, readClangSymbolTable, fillDatabase, fillDatabaseRules } from "./Database"
+import { SymbolTableJson } from "./SymbolTable";
 import { values } from "./CLI"
 
 
@@ -21,7 +21,7 @@ async function main() {
         return
     }
 
-    const symbol_tree: SymbolTreeJson = readClangSyntaxTree(values.seed as string);
-    await fillDatabase(symbol_tree)
+    const symbol_table: SymbolTableJson = readClangSymbolTable(values.seed as string);
+    await fillDatabase(symbol_table)
     await fillDatabaseRules(rules_path)
 }

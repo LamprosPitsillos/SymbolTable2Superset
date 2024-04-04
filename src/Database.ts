@@ -4,7 +4,7 @@ import { values } from "./CLI"
 import { Rule_db, getRules, getSmells } from './Rules';
 
 import {
-    SymbolTreeJson,
+    SymbolTableJson,
     Source, Dependency,
     Structures, StructureEntry,
     Field, Field_flat,
@@ -12,7 +12,7 @@ import {
     Arg, Arg_flat,
     Definition, Definition_flat,
     Header
-} from './SyntaxTree'
+} from './SymbolTable'
 import { readFileSync, PathLike } from 'fs';
 import { detectNamingConvention } from './HelperFunctions/Naming';
 import { processFile } from './HelperFunctions/Lines';
@@ -23,14 +23,14 @@ export const prisma = new PrismaClient({
     errorFormat: 'pretty',
 })
 
-export function readClangSyntaxTree(filePath: PathLike): SymbolTreeJson {
+export function readClangSymbolTable(filePath: PathLike): SymbolTableJson {
     try {
         const jsonContent = readFileSync(filePath, 'ascii');
-        const syntaxTree = JSON.parse(jsonContent);
-        return syntaxTree;
+        const symbolTable = JSON.parse(jsonContent);
+        return symbolTable;
     } catch (error) {
 
-        let msg = "Error while reading Clang syntax tree: "
+        let msg = "Error while reading Clang symbol table: "
         if (error instanceof Error) {
             msg += error.message
         }
@@ -39,12 +39,12 @@ export function readClangSyntaxTree(filePath: PathLike): SymbolTreeJson {
     }
 }
 
-export async function fillDatabase(symbol_tree: SymbolTreeJson) {
-    await fillDatabaseSources(symbol_tree.sources)
-    await fillDatabaseHeaders(symbol_tree.headers)
-    await fillDatabaseDependancies(symbol_tree.dependencies)
-    await fillDatabaseStructures(symbol_tree.structures, symbol_tree.dependencies)
-    await fillDatabaseDependancyCircles(symbol_tree.dependencies)
+export async function fillDatabase(symbol_table: SymbolTableJson) {
+    await fillDatabaseSources(symbol_table.sources)
+    await fillDatabaseHeaders(symbol_table.headers)
+    await fillDatabaseDependancies(symbol_table.dependencies)
+    await fillDatabaseStructures(symbol_table.structures, symbol_table.dependencies)
+    await fillDatabaseDependancyCircles(symbol_table.dependencies)
 
 
 }
@@ -340,18 +340,6 @@ function showLoadingBar(depth: number, name: string, index: number, total: numbe
 
 
 }
-
-async function dropDatabase() {
-    const tables = ["Dependency", "Structure", "Source"];
-
-    for (const table of tables) {
-        const drop = Prisma.sql`DROP TABLE IF EXISTS ${table}`
-        await prisma.$executeRaw(drop);
-    }
-
-    // Any code you want to run after all tables are dropped
-}
-
 
 function embed_fields(structure: StructureEntry) {
     let object_fields = []

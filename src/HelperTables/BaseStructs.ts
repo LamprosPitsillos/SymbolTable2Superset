@@ -1,3 +1,3 @@
-import { SymbolTreeJson } from "../SyntaxTree";
+import { SymbolTableJson } from "../SymbolTable";
 
-export function get_base_structures(ST:SymbolTreeJson){}
+export function get_base_structures(ST:SymbolTableJson){}

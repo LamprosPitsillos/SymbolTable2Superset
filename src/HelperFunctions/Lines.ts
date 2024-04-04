@@ -1,9 +1,9 @@
-import { SymbolTreeJson } from "../SyntaxTree";
+import { SymbolTableJson } from "../SymbolTable";
 
 import * as fs from 'fs';
 import * as readline from 'readline';
 
-export async function line_len_from_ST(ST: SymbolTreeJson): Promise<Record<string, number[]>> {
+export async function line_len_from_ST(ST: SymbolTableJson): Promise<Record<string, number[]>> {
     let report: Record<string, number[]> = {};
     if (ST.headers) {
         for (const header of ST.headers) {

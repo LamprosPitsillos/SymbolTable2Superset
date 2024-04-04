@@ -31,7 +31,7 @@ const parse_config: ParseArgs = {
         },
         'seed': {
             type: 'string',
-            desc: "The Json file where the C++ SymbolTree has been stored.",
+            desc: "The Json file where the C++ SymbolTable has been stored.",
             short: 's',
         },
         'dry-run': {
@@ -119,7 +119,7 @@ function assertArgs() {
         }
 
         if (values.seed === undefined && !values["update-rules"]) {
-            throw Error("Provide a filePath to the Syntax Tree json file via ` -s | --seed `.")
+            throw Error("Provide a filePath to the Symbol Table json file via ` -s | --seed `.")
         }
         return values
     } catch (error) {

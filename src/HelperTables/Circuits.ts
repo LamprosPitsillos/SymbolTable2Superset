@@ -1,4 +1,4 @@
-import { Dependency, SymbolTreeJson } from "../SyntaxTree";
+import { Dependency, SymbolTableJson } from "../SymbolTable";
 export function get_dependency_circles(dependencies: Dependency[]) {
     let list = get_adjacency_list(dependencies);
     return new Graph(list).getStronglyConnectedComponents().filter(x => x.length > 1);
