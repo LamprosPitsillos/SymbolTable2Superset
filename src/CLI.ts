@@ -86,13 +86,7 @@ export const bold = (text: string): string => formatText(text, '1');
 function help() {
     console.log(String.raw`
 
-
- ██████╗ ██████╗ ██████╗ ███████╗██████╗ ██╗
-██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔══██╗██║
-██║     ██║   ██║██║  ██║█████╗  ██████╔╝██║
-██║     ██║   ██║██║  ██║██╔══╝  ██╔══██╗██║
-╚██████╗╚██████╔╝██████╔╝███████╗██████╔╝██║
- ╚═════╝ ╚═════╝ ╚═════╝ ╚══════╝╚═════╝ ╚═╝ ${italic(" A tool by Lampros Pitsillos")}
+${italic(" A tool by Lampros Pitsillos")}
 
 ${bold("Help")}:
 
@@ -113,25 +107,6 @@ ${bold("Arguments")}:
         helpMessage += line;
     }
     console.log(helpMessage)
-    //
-    // `
-    // ${bold("--help/-h")}
-    //     See this help message.
-    //
-    // ${bold("--seed/-s")}:                                                                   ${italic("{ type: string }")}
-    //     The Json file where the C++ SymbolTree has been stored.
-    //
-    // ${bold("--update-rules/-u")}:                                          ${italic("{ type: boolean, default: false }")}
-    //     Update the rules according to the Smells.json file provided in root of path.
-    //
-    // ${bold("--verbose/-v")}:                                                  ${italic("{ type: boolean, default: false }")}
-    //     Output everything as it is sent to the DB.
-    //
-    // ${bold("--dry-run/-d")}:                                                  ${italic("{ type: boolean, default: false }")}
-    //     No data will be send to the database thus no changes will happen
-    //         ( Used primarily for testing ).
-    // `);
-
 }
 
 function assertArgs() {
