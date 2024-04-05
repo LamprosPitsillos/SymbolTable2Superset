@@ -16,7 +16,7 @@ import {
 import { readFileSync, PathLike } from 'fs';
 import { detectNamingConvention } from './HelperFunctions/Naming';
 import { processFile } from './HelperFunctions/Lines';
-import { get_dependency_circles } from './HelperTables/Circuits';
+import { get_dependency_circles } from './HelperFunctions/Circuits';
 
 
 export const prisma = new PrismaClient({
